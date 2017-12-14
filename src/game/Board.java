@@ -54,7 +54,7 @@ public class Board {
             black = player2;
         }
         
-        Pawn pawn1 = new Pawn(Color.BLACK, 1, 0);
+//        Pawn pawn1 = new Pawn(Color.BLACK, 1, 0);
         Pawn pawn2 = new Pawn(Color.BLACK, 1, 1);
         Pawn pawn3 = new Pawn(Color.BLACK, 1, 2);
         Pawn pawn4 = new Pawn(Color.BLACK, 1, 3);
@@ -71,7 +71,7 @@ public class Board {
         Queen queen = new Queen(Color.BLACK, 0, 3);
         King king = new King(Color.BLACK, 0, 4);
         
-        this.getTile(1, 0).setPiece(pawn1);
+//        this.getTile(1, 0).setPiece(pawn1);
         this.getTile(1, 1).setPiece(pawn2);
         this.getTile(1, 2).setPiece(pawn3);
         this.getTile(1, 3).setPiece(pawn4);
@@ -88,7 +88,7 @@ public class Board {
         this.getTile(0, 3).setPiece(queen);
         this.getTile(0, 4).setPiece(king);
         
-        black.getPieces().add(pawn1);
+//        black.getPieces().add(pawn1);
         black.getPieces().add(pawn2);
         black.getPieces().add(pawn3);
         black.getPieces().add(pawn4);
@@ -105,7 +105,7 @@ public class Board {
         black.getPieces().add(queen);
         black.getPieces().add(king);
 
-        pawn1 = new Pawn(Color.WHITE, 6, 0);
+//        pawn1 = new Pawn(Color.WHITE, 6, 0);
         pawn2 = new Pawn(Color.WHITE, 6, 1);
         pawn3 = new Pawn(Color.WHITE, 6, 2);
         pawn4 = new Pawn(Color.WHITE, 6, 3);
@@ -122,7 +122,7 @@ public class Board {
         queen = new Queen(Color.WHITE, 7, 3);
         king = new King(Color.WHITE, 7, 4);
 
-        this.getTile(6, 0).setPiece(pawn1);
+//        this.getTile(6, 0).setPiece(pawn1);
         this.getTile(6, 1).setPiece(pawn2);
         this.getTile(6, 2).setPiece(pawn3);
         this.getTile(6, 3).setPiece(pawn4);
@@ -139,7 +139,7 @@ public class Board {
         this.getTile(7, 3).setPiece(queen);
         this.getTile(7, 4).setPiece(king);
 
-        white.getPieces().add(pawn1);
+//        white.getPieces().add(pawn1);
         white.getPieces().add(pawn2);
         white.getPieces().add(pawn3);
         white.getPieces().add(pawn4);

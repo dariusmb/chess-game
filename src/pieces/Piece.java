@@ -67,4 +67,5 @@ public abstract class Piece {
     }
 
     public abstract void move(Board board, Player player, int toX, int toY);
+
 }

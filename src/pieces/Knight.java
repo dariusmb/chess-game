@@ -36,7 +36,6 @@ public class Knight extends Piece{
 
     public void move(Board board, Player player, int toX, int toY){
 
-        System.out.println("here");
         if(player.getColor() != this.getColor()){
             System.out.println("Not your piece");
             return;
