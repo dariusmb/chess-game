@@ -39,4 +39,13 @@ public class Tile {
     public void setPiece(Piece piece) {
         this.piece = piece;
     }
+
+    @Override
+    public String toString() {
+        return "Tile{" +
+                "x=" + x +
+                ", y=" + y +
+                ", piece=" + piece +
+                '}';
+    }
 }

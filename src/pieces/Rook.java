@@ -1,6 +1,8 @@
 package pieces;
 
+import game.Board;
 import game.Color;
+import game.Player;
 import game.Tile;
 
 /**
@@ -10,24 +12,26 @@ public class Rook extends Piece{
 
     private boolean isFirstMove;
 
-    public Rook(Color color, Tile tile){
-        super(color, tile, true);
+    public Rook(Color color, int x, int y){
+        super(color, x, y, true);
         this.isFirstMove = true;
     }
 
     @Override
-    public boolean isMoveValid(Tile toTile) {
-        super.isMoveValid(toTile);
+    public boolean isMoveValid(Board board, int toX, int toY) {
+        super.isMoveValid(board, toX, toY);
 
-        int fromX = this.getTile().getX();
-        int fromY = this.getTile().getY();
-        int toX = toTile.getX();
-        int toY = toTile.getY();
+        int fromX = this.getX();
+        int fromY = this.getY();
 
         if (!(fromX == toX || fromY == toY)) {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void move(Board board, Player player, int toX, int toY) {
     }
 
     @Override

@@ -2,6 +2,7 @@ package pieces;
 
 import game.Board;
 import game.Color;
+import game.Player;
 import game.Tile;
 
 import static java.lang.Math.abs;
@@ -13,19 +14,17 @@ public class Pawn extends Piece{
 
     private boolean isFirstMove;
 
-    public Pawn(Color color, Tile tile){
-        super(color, tile, true);
+    public Pawn(Color color, int x, int y){
+        super(color, x, y, true);
         this.isFirstMove = true;
     }
 
-    public boolean isMoveValid(Tile toTile, Board board) {
+    public boolean isMoveValid(Board board, int toX, int toY) {
         // if color is black can only move downwards
-        super.isMoveValid(toTile);
+        super.isMoveValid(board, toX, toY);
 
-        int toY = toTile.getY();
-        int toX = toTile.getX();
-        int fromY = this.getTile().getY();
-        int fromX = this.getTile().getX();
+        int fromY = this.getY();
+        int fromX = this.getX();
 
         if(this.getColor() == Color.BLACK){
             if(fromY  == toY && fromX + 1 == toX){
@@ -51,6 +50,11 @@ public class Pawn extends Piece{
         }
 
         return false;
+    }
+
+    @Override
+    public void move(Board board, Player player, int toX, int toY) {
+        return ;
     }
 
     @Override

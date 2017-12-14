@@ -16,7 +16,11 @@ public class Main {
 
         board.initializeBoard(player1, player2);
         board.showPieces();
+        System.out.println(board.getTile(0, 2));
+        System.out.println(board.getTile(0, 2).getPiece().isMoveValid(board,2, 3));
+        //TODO add a try catch to treat null if tile has no piece
+        board.getTile(0, 2).getPiece().move(board, player2, 2, 3);
+        board.showPieces();
 
-//        System.out.println(((Knight)board.getTile(0, 2).getPiece()).isMoveValid(2, 4));
     }
 }
