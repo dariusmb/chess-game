@@ -165,4 +165,76 @@ public class Board {
             System.out.println();
         }
     }
+
+
+    private boolean checkIfClearWayDiagonal(Tile fromTile, Tile toTile){
+
+        int rowOffset;
+        int columnOffset;
+
+        if(fromTile.getX() < toTile.getX()){
+            rowOffset = 1;
+        } else {
+            rowOffset = -1;
+        }
+
+        if(fromTile.getY() < toTile.getY()){
+            columnOffset = 1;
+        } else {
+            columnOffset = -1;
+        }
+
+        int j = fromTile.getY() + columnOffset;
+        for(int i = fromTile.getX() + rowOffset; i != toTile.getX(); i += rowOffset){
+
+            if(getTile(i,j).getPiece() != null){
+                return false;
+            }
+            j += columnOffset;
+        }
+
+        return true;
+    }
+
+    private boolean checkIfClearWayOnLine(Tile fromTile, Tile toTile){
+
+        int rowOffset;
+        int columnOffset;
+
+        if(toTile.getX() != fromTile.getX()){
+            if(toTile.getX() < fromTile.getX()) {
+                rowOffset = -1;
+            } else {
+                rowOffset = 1;
+            }
+            for(int i = fromTile.getX() + rowOffset;  i != toTile.getX(); i++){
+                if(getTile(i, toTile.getY()).getPiece() != null){
+                    return false;
+                }
+            }
+        } else if (toTile.getY() != fromTile.getY()) {
+            if (toTile.getY() < fromTile.getY()) {
+                columnOffset = -1;
+            } else {
+                columnOffset = 1;
+            }
+            for (int i = fromTile.getY() + columnOffset; i != toTile.getY(); i++) {
+                if (getTile(toTile.getX(), i).getPiece() != null) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+    
+    public boolean checkIfClearWay(Tile fromTile, Tile toTile) {
+
+        if((toTile.getX() != fromTile.getX() && toTile.getY() == fromTile.getY()) ||
+                (toTile.getX() == fromTile.getX() && toTile.getY() != fromTile.getY())){
+            return checkIfClearWayOnLine(fromTile, toTile);
+        } else {
+            return checkIfClearWayDiagonal(fromTile, toTile);
+        }
+    }
 }

@@ -50,7 +50,7 @@ public class Knight extends Piece{
             return ;
         }
 
-        return ;
+        return;
     }
 
     @Override
