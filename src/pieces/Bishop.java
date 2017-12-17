@@ -18,55 +18,18 @@ public class Bishop  extends Piece{
     }
 
     @Override
-    public boolean isMoveValid(Board board, int toX, int toY) {
-        super.isMoveValid(board, toX, toY);
+    public boolean isMoveValid(Tile toTile) {
+        super.isMoveValid(toTile);
 
         int fromX = this.getX();
         int fromY = this.getY();
 
-        if (!(abs(fromX - toX) == abs(fromY - toY))){
+        if (!(abs(fromX - toTile.getX()) == abs(fromY - toTile.getY()))){
             return false;
         }
         return true;
     }
 
-    private boolean checkIfClearWay(Board board, int toX, int toY){
-        int from;
-        int to;
-
-        if(toX != this.getX()){
-            if(toX < this.getX()) {
-                from = toX;
-                to = this.getX();
-            } else {
-                to = toX;
-                from = this.getX();
-            }
-            for(int i = from + 1; i < to; i++){
-                if(board.getTile(i, toY).getPiece() != null){
-                    return false;
-                }
-            }
-        } else {
-            if(toY < this.getY()) {
-                from = toY;
-                to = this.getY();
-            } else {
-                to = toY;
-                from = this.getY();
-            }
-            for(int i = from + 1; i < to; i++){
-                if(board.getTile(toX, i).getPiece() != null){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public void move(Board board, Player player, int toX, int toY) {
-    }
 
     @Override
     public String toString() {

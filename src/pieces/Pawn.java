@@ -19,43 +19,43 @@ public class Pawn extends Piece{
         this.isFirstMove = true;
     }
 
-    public boolean isMoveValid(Board board, int toX, int toY) {
+    public boolean isMoveValid(Tile toTile) {
         // if color is black can only move downwards
-        super.isMoveValid(board, toX, toY);
+        super.isMoveValid(toTile);
 
         int fromY = this.getY();
         int fromX = this.getX();
+        int toX = toTile.getX();
+        int toY = toTile.getY();
 
         if(this.getColor() == Color.BLACK){
             if(fromY  == toY && fromX + 1 == toX){
                 return true;
-            } else if(fromX + 2 == toX  && isFirstMove && fromY == toY && board.getTile(toX + 1, toY).isEmptyTile()){
-                return true;
-            } else if((fromY + 1 == toY || fromY - 1 == toY) && fromX + 1 == toX && !board.getTile(toX, toY).isEmptyTile()){
-                //if there is a pawn that you can capture
+            } else if(fromX + 2 == toX  && isFirstMove && fromY == toY/* && board.getTile(toX + 1, toY).isEmptyTile() */){
                 return true;
             }
+//            else if((fromY + 1 == toY || fromY - 1 == toY) && fromX + 1 == toX /* && !board.getTile(toX, toY).isEmptyTile() */){
+//                //if there is a pawn that you can capture
+//                return true;
+//            }
         }
 
         // if color is black can only move upwards
         if(this.getColor() == Color.WHITE){
             if(fromX - 1 == toX && fromY  == toY){
                 return true;
-            } else if(fromY == toY && fromX - 2 == toX && isFirstMove && board.getTile(toX  - 1, toY).isEmptyTile()){
+            } else if (fromY == toY && fromX - 2 == toX && isFirstMove /* && board.getTile(toX  - 1, toY).isEmptyTile()*/){
                 return true;
-            } else if((fromY + 1 == toY || fromY- 1 == toY) && fromX - 1 == toX && !board.getTile(toX, toY).isEmptyTile()){
-                //if there is a pawn that you can capture
-                return true;
-            }
+           }
+//           else if((fromY + 1 == toY || fromY- 1 == toY) && fromX - 1 == toX  && !board.getTile(toX, toY).isEmptyTile() ){
+//                //if there is a pawn that you can capture
+//                return true;
+//            }
         }
 
         return false;
     }
 
-    @Override
-    public void move(Board board, Player player, int toX, int toY) {
-        return ;
-    }
 
     @Override
     public String toString() {

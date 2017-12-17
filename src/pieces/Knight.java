@@ -18,40 +18,21 @@ public class Knight extends Piece{
     }
 
 //    @Override
-    public boolean isMoveValid(Board board, int toX, int toY) {
-        if(board.getTile(toX, toY).getPiece() != null && board.getTile(toX, toY).getPiece().getColor() == this.getColor()){
-            System.out.println("Cannot capture your own piece");
-        }
-        System.out.println(toX +  " " +  toY);
-        System.out.println(this.getX() +  " " +  this.getY());
-        super.isMoveValid(board, toX, toY);
-        if (abs(this.getX() - toX) == 2 && abs(this.getY() - toY) == 1){
+    public boolean isMoveValid(Tile toTile) {
+//        if(board.getTile(toX, toY).getPiece() != null && board.getTile(toX, toY).getPiece().getColor() == this.getColor()){
+//            System.out.println("Cannot capture your own piece");
+//    }
+        super.isMoveValid(toTile);
+        if (abs(this.getX() - toTile.getX()) == 2 && abs(this.getY() - toTile.getY()) == 1){
             return true;
-        } else if(abs(this.getX() - toX) == 1 && abs(this.getY() - toY) == 2){
+        } else if(abs(this.getX() - toTile.getX()) == 1 && abs(this.getY() - toTile.getY()) == 2){
             return true;
         }
         System.out.println("false");
         return false;
     }
 
-    public void move(Board board, Player player, int toX, int toY){
 
-        if(player.getColor() != this.getColor()){
-            System.out.println("Not your piece");
-            return;
-        }
-
-        if(isMoveValid(board, toX, toY)){
-
-            board.getTile(this.getX(), this.getY()).setPiece(null);
-            board.getTile(toX, toY).setPiece(this);
-            this.setX(toX);
-            this.setY(toY);
-            return ;
-        }
-
-        return;
-    }
 
     @Override
     public String toString() {

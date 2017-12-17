@@ -14,12 +14,14 @@ public abstract class Piece {
     private int x;
     private int y;
     private boolean isAlive;
+    private boolean isFirstMove;
 
     public Piece(Color color, int x, int y, boolean isAlive){
         this.color = color;
         this.x = x;
         this.y = y;
         this.isAlive = isAlive;
+        this.isFirstMove = true;
     }
 
     public int getX() {
@@ -43,6 +45,14 @@ public abstract class Piece {
         isAlive = alive;
     }
 
+    public boolean isFirstMove() {
+        return isFirstMove;
+    }
+
+    public void setFirstMove(boolean firstMove) {
+        isFirstMove = firstMove;
+    }
+
     public Color getColor() {
         return color;
     }
@@ -52,20 +62,20 @@ public abstract class Piece {
         return isAlive;
     }
 
-    public boolean isMoveValid(Board board, int toX, int toY) {
+    public boolean isMoveValid(Tile toTile) {
 
         //same coordinates
-        if(this.x == toX && this.y== toY){
+        if(this.x == toTile.getX() && this.y== toTile.getY()){
             return false;
         }
 
-        if((toX > 7 || toX < 0) || (toY > 7 || toY < 0)) {
+        if((toTile.getX() > 7 || toTile.getX() < 0) || (toTile.getY() > 7 || toTile.getY() < 0)) {
             return false;
         }
 
         return true;
     }
 
-    public abstract void move(Board board, Player player, int toX, int toY);
+//    public abstract void move(Board board, Player player, int toX, int toY);
 
 }

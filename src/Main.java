@@ -17,9 +17,10 @@ public class Main {
         board.initializeBoard(player1, player2);
         board.showPieces();
         System.out.println(board.getTile(0, 2));
-        System.out.println(board.getTile(0, 2).getPiece().isMoveValid(board,2, 3));
+//        System.out.println(board.getTile(0, 2).getPiece().isMoveValid(board,2, 3));
         //TODO add a try catch to treat null if tile has no piece
-        board.getTile(0, 0).getPiece().move(board, player1, 7, 0);
+//        board.getTile(0, 0).getPiece().move(board, player1, 7, 0);
+        board.move(player1, board.getTile(1, 0), board.getTile(3, 0));
         board.showPieces();
 
     }

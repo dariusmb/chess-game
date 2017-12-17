@@ -18,20 +18,16 @@ public class King extends Piece{
     }
 
     @Override
-    public boolean isMoveValid(Board board, int toX, int toY) {
-        super.isMoveValid(board, toX, toY);
+    public boolean isMoveValid(Tile toTile) {
+        super.isMoveValid(toTile);
 
         int fromX = this.getX();
         int fromY = this.getY();
 
-        if(toX > fromX + 1 || toX < fromX - 1 || toY > fromY + 1 || fromY < fromY - 1){
+        if(toTile.getX() > fromX + 1 || toTile.getX() < fromX - 1 || toTile.getY() > fromY + 1 || fromY < fromY - 1){
             return false;
         }
         return true;
-    }
-
-    @Override
-    public void move(Board board, Player player, int toX, int toY) {
     }
 
     @Override

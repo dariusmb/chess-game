@@ -17,21 +17,16 @@ public class Queen extends Piece{
     }
 
     @Override
-    public boolean isMoveValid(Board board, int toX, int toY) {
-        super.isMoveValid(board, toX, toY);
+    public boolean isMoveValid(Tile toTile) {
+        super.isMoveValid(toTile);
 
         int fromX = this.getX();
         int fromY = this.getY();
 
-        if(!(fromX == toX || fromY == toY || (abs(fromX - toX)) == abs(fromY - toY))){
+        if(!(fromX == toTile.getX() || fromY == toTile.getY() || (abs(fromX - toTile.getX())) == abs(fromY - toTile.getY()))){
             return false;
         }
         return true;
-    }
-
-    @Override
-    public void move(Board board, Player player, int toX, int toY) {
-
     }
 
     @Override
