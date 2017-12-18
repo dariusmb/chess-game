@@ -12,16 +12,16 @@ import static java.lang.StrictMath.abs;
  */
 public class Queen extends Piece{
 
-    public Queen(Color color, int x, int y){
-        super(color, x, y, true);
+    public Queen(Color color){
+        super(color, true);
     }
 
     @Override
-    public boolean isMoveValid(Tile toTile) {
-        super.isMoveValid(toTile);
+    public boolean isMoveValid(Tile fromTile, Tile toTile) {
+        super.isMoveValid(fromTile, toTile);
 
-        int fromX = this.getX();
-        int fromY = this.getY();
+        int fromX = fromTile.getX();
+        int fromY = fromTile.getY();
 
         if(!(fromX == toTile.getX() || fromY == toTile.getY() || (abs(fromX - toTile.getX())) == abs(fromY - toTile.getY()))){
             return false;

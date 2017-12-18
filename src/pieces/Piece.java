@@ -9,36 +9,16 @@ import game.Tile;
  * Created by Bogdan Darius on 12/10/2017.
  */
 public abstract class Piece {
-
+//TODO remove coordinates from piece and make movevalid take fromTile to toTile
+//TODO remove isfirstmove from other pieces
     private Color color;
-    private int x;
-    private int y;
     private boolean isAlive;
     private boolean isFirstMove;
 
-    public Piece(Color color, int x, int y, boolean isAlive){
+    public Piece(Color color, boolean isAlive){
         this.color = color;
-        this.x = x;
-        this.y = y;
         this.isAlive = isAlive;
         this.isFirstMove = true;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     public void setAlive(boolean alive) {
@@ -62,10 +42,10 @@ public abstract class Piece {
         return isAlive;
     }
 
-    public boolean isMoveValid(Tile toTile) {
+    public boolean isMoveValid(Tile fromTile, Tile toTile) {
 
         //same coordinates
-        if(this.x == toTile.getX() && this.y== toTile.getY()){
+        if(fromTile.getX() == toTile.getX() && fromTile.getY() == toTile.getY()){
             return false;
         }
 

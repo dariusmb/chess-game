@@ -12,19 +12,16 @@ public class Rook extends Piece{
 
     private boolean isFirstMove;
 
-    public Rook(Color color, int x, int y){
-        super(color, x, y, true);
+    public Rook(Color color){
+        super(color, true);
         this.isFirstMove = true;
     }
 
     @Override
-    public boolean isMoveValid(Tile toTile) {
-        super.isMoveValid(toTile);
+    public boolean isMoveValid(Tile fromTile, Tile toTile) {
+        super.isMoveValid(fromTile, toTile);
 
-        int fromX = this.getX();
-        int fromY = this.getY();
-
-        if (!(fromX == toTile.getX() || fromY == toTile.getY())) {
+        if (!(fromTile.getX() == toTile.getX() || fromTile.getY() == toTile.getY())) {
             return false;
         }
 

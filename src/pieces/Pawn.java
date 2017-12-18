@@ -14,17 +14,17 @@ public class Pawn extends Piece{
 
     private boolean isFirstMove;
 
-    public Pawn(Color color, int x, int y){
-        super(color, x, y, true);
+    public Pawn(Color color){
+        super(color, true);
         this.isFirstMove = true;
     }
 
-    public boolean isMoveValid(Tile toTile) {
+    public boolean isMoveValid(Tile fromTile, Tile toTile) {
         // if color is black can only move downwards
-        super.isMoveValid(toTile);
+        super.isMoveValid(fromTile, toTile);
 
-        int fromY = this.getY();
-        int fromX = this.getX();
+        int fromY = fromTile.getY();
+        int fromX = fromTile.getX();
         int toX = toTile.getX();
         int toY = toTile.getY();
 
@@ -34,10 +34,6 @@ public class Pawn extends Piece{
             } else if(fromX + 2 == toX  && isFirstMove && fromY == toY/* && board.getTile(toX + 1, toY).isEmptyTile() */){
                 return true;
             }
-//            else if((fromY + 1 == toY || fromY - 1 == toY) && fromX + 1 == toX /* && !board.getTile(toX, toY).isEmptyTile() */){
-//                //if there is a pawn that you can capture
-//                return true;
-//            }
         }
 
         // if color is black can only move upwards
@@ -47,10 +43,6 @@ public class Pawn extends Piece{
             } else if (fromY == toY && fromX - 2 == toX && isFirstMove /* && board.getTile(toX  - 1, toY).isEmptyTile()*/){
                 return true;
            }
-//           else if((fromY + 1 == toY || fromY- 1 == toY) && fromX - 1 == toX  && !board.getTile(toX, toY).isEmptyTile() ){
-//                //if there is a pawn that you can capture
-//                return true;
-//            }
         }
 
         return false;

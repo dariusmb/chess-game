@@ -13,18 +13,15 @@ import static java.lang.StrictMath.abs;
 public class Bishop  extends Piece{
 
 
-    public Bishop(Color color, int x, int y){
-        super(color, x, y, true);
+    public Bishop(Color color){
+        super(color, true);
     }
 
     @Override
-    public boolean isMoveValid(Tile toTile) {
-        super.isMoveValid(toTile);
+    public boolean isMoveValid(Tile fromTile, Tile toTile) {
+        super.isMoveValid(fromTile, toTile);
 
-        int fromX = this.getX();
-        int fromY = this.getY();
-
-        if (!(abs(fromX - toTile.getX()) == abs(fromY - toTile.getY()))){
+        if (!(abs(fromTile.getX() - toTile.getX()) == abs(fromTile.getY() - toTile.getY()))){
             return false;
         }
         return true;

@@ -13,19 +13,19 @@ import static java.lang.StrictMath.abs;
  */
 public class Knight extends Piece{
 
-    public Knight(Color color, int x, int y){
-        super(color, x, y, true);
+    public Knight(Color color){
+        super(color, true);
     }
 
 //    @Override
-    public boolean isMoveValid(Tile toTile) {
+    public boolean isMoveValid(Tile fromTile, Tile toTile) {
 //        if(board.getTile(toX, toY).getPiece() != null && board.getTile(toX, toY).getPiece().getColor() == this.getColor()){
 //            System.out.println("Cannot capture your own piece");
 //    }
-        super.isMoveValid(toTile);
-        if (abs(this.getX() - toTile.getX()) == 2 && abs(this.getY() - toTile.getY()) == 1){
+        super.isMoveValid(fromTile, toTile);
+        if (abs(fromTile.getX() - toTile.getX()) == 2 && abs(fromTile.getY() - toTile.getY()) == 1){
             return true;
-        } else if(abs(this.getX() - toTile.getX()) == 1 && abs(this.getY() - toTile.getY()) == 2){
+        } else if(abs(fromTile.getX() - toTile.getX()) == 1 && abs(fromTile.getY() - toTile.getY()) == 2){
             return true;
         }
         System.out.println("false");

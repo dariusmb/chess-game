@@ -12,19 +12,17 @@ public class King extends Piece{
 
     private boolean isFirstMove;
 
-    public King(Color color, int x, int y){
-        super(color, x, y, true);
+    public King(Color color){
+        super(color, true);
         this.isFirstMove = true;
     }
 
     @Override
-    public boolean isMoveValid(Tile toTile) {
-        super.isMoveValid(toTile);
+    public boolean isMoveValid(Tile fromTile, Tile toTile) {
+        super.isMoveValid(fromTile, toTile);
 
-        int fromX = this.getX();
-        int fromY = this.getY();
-
-        if(toTile.getX() > fromX + 1 || toTile.getX() < fromX - 1 || toTile.getY() > fromY + 1 || fromY < fromY - 1){
+        if(toTile.getX() > fromTile.getX() + 1 || toTile.getX() < fromTile.getX() - 1
+                || toTile.getY() > fromTile.getY() + 1 || toTile.getY() < fromTile.getY() - 1){
             return false;
         }
         return true;
