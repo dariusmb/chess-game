@@ -1,8 +1,6 @@
 package pieces;
 
-import game.Board;
 import game.Color;
-import game.Player;
 import game.Tile;
 
 /**
@@ -10,11 +8,8 @@ import game.Tile;
  */
 public class Rook extends Piece{
 
-    private boolean isFirstMove;
-
     public Rook(Color color){
         super(color, true);
-        this.isFirstMove = true;
     }
 
     @Override

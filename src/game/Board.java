@@ -11,7 +11,7 @@ public class Board {
 
     private ArrayList<Tile> tiles;
     private ArrayList<Piece> removedPieces;
-
+    private Tile lastMove;
 
     public Board(){
         tiles = new ArrayList<>();
@@ -21,6 +21,7 @@ public class Board {
             }
         }
         removedPieces = new ArrayList<>();
+        lastMove = null;
     }
 
     public ArrayList<Tile> getTiles() {
@@ -54,19 +55,9 @@ public class Board {
             black = player2;
         }
         Pawn pawn = new Pawn(Color.BLACK);
-//        Pawn pawn2 = new Pawn(Color.BLACK, 1, 1);
-//        Pawn pawn3 = new Pawn(Color.BLACK, 1, 2);
-//        Pawn pawn4 = new Pawn(Color.BLACK, 1, 3);
-//        Pawn pawn5 = new Pawn(Color.BLACK, 1, 4);
-//        Pawn pawn6 = new Pawn(Color.BLACK, 1, 5);
-//        Pawn pawn7 = new Pawn(Color.BLACK, 1, 6);
-//        Pawn pawn8 = new Pawn(Color.BLACK, 1, 7);
         Rook rook = new Rook(Color.BLACK);
-//        Rook rook2 = new Rook(Color.BLACK, 0, 7);
         Bishop bishop = new Bishop(Color.BLACK);
-//        Bishop bishop2 = new Bishop(Color.BLACK, 0, 6);
         Knight knight = new Knight(Color.BLACK);
-//        Knight knight2 = new Knight(Color.BLACK, 0, 5);
         Queen queen = new Queen(Color.BLACK);
         King king = new King(Color.BLACK);
 
@@ -105,19 +96,9 @@ public class Board {
         black.getPieces().add(king);
 
         pawn = new Pawn(Color.WHITE);
-//        pawn2 = new Pawn(Color.WHITE, 6, 1);
-//        pawn3 = new Pawn(Color.WHITE, 6, 2);
-//        pawn4 = new Pawn(Color.WHITE, 6, 3);
-//        pawn5 = new Pawn(Color.WHITE, 6, 4);
-//        pawn6 = new Pawn(Color.WHITE, 6, 5);
-//        pawn7 = new Pawn(Color.WHITE, 6, 6);
-//        pawn8 = new Pawn(Color.WHITE,6, 7);
-//        rook1 = new Rook(Color.WHITE, 7, 0);
         rook = new Rook(Color.WHITE);
         bishop = new Bishop(Color.WHITE);
-//        bishop2 = new Bishop(Color.WHITE,7, 6);
         knight = new Knight(Color.WHITE);
-//        knight2 = new Knight(Color.WHITE, 7, 5);
         queen = new Queen(Color.WHITE);
         king = new King(Color.WHITE);
 
@@ -137,6 +118,8 @@ public class Board {
         this.getTile(7, 5).setPiece(knight);
         this.getTile(7, 3).setPiece(queen);
         this.getTile(7, 4).setPiece(king);
+        //for testing
+        this.getTile(3, 2).setPiece(pawn);
 
         white.getPieces().add(pawn);
         white.getPieces().add(pawn);
@@ -227,7 +210,7 @@ public class Board {
         return true;
     }
 
-    public boolean checkIfClearWay(Tile fromTile, Tile toTile) {
+    private boolean checkIfClearWay(Tile fromTile, Tile toTile) {
 
         if((toTile.getX() != fromTile.getX() && toTile.getY() == fromTile.getY()) ||
                 (toTile.getX() == fromTile.getX() && toTile.getY() != fromTile.getY())){
@@ -247,23 +230,54 @@ public class Board {
 
         if(toTile.getPiece() != null && toTile.getPiece().getColor() == fromTile.getPiece().getColor()){
             System.out.println("Cannot capture your own piece");
+            return;
         }
 
-        if(movedPiece.isMoveValid(fromTile, toTile)){
-            movedPiece.setFirstMove(false);
-            if (checkIfClearWay(fromTile, toTile)){
-                toTile.setPiece(fromTile.getPiece());
-//                fromTile.getPiece().setX(toTile.getX());
-//                fromTile.getPiece().setY(toTile.getY());
-                fromTile.setPiece(null);
-            } else{
-                System.out.println("not a clear way");
+        if((movedPiece instanceof Pawn && movePawn(player, fromTile, toTile)) ||
+                (movedPiece.isMoveValid(fromTile, toTile) && checkIfClearWay(fromTile, toTile) && !(movedPiece instanceof Pawn))){
+            if(toTile.getPiece() != null){
+                removedPieces.add(toTile.getPiece());
             }
-//            board.getTile(this.getX(), this.getY()).setPiece(null);
-//            board.getTile(toX, toY).setPiece(this);
-//            this.setX(toX);
-//            this.setY(toY);
-//            this.isFirstMove = false;
+            lastMove = toTile;
+            movedPiece.setFirstMove(false);
+            toTile.setPiece(fromTile.getPiece());
+            fromTile.setPiece(null);
         }
+
+        System.out.println(removedPieces);
     }
+
+    private boolean movePawn(Player player, Tile fromTile, Tile toTile){
+
+        int fromX = fromTile.getX();
+        int fromY = fromTile.getY();
+        int toX = toTile.getX();
+        int toY = toTile.getY();
+        int rowOffset;
+
+        if(player.getColor() == Color.BLACK){
+            rowOffset = 1;
+        } else {
+            rowOffset = -1;
+        }
+
+        // if there is a piece you can capture it
+        if ((fromY + 1 == toY || fromY - 1 == toY) && fromX + rowOffset == toX){
+            if(!getTile(toX, toY).isEmptyTile()){
+                return true;
+            } else if (lastMove.getX() == toX - rowOffset && lastMove.getY() == toY && ((Pawn)lastMove.getPiece()).isJumpOneSpace()){
+                System.out.println("en passant");
+                removedPieces.add(lastMove.getPiece());
+                lastMove.setPiece(null);
+                return true;
+            }
+            System.out.println("cant en passant");
+            return false;
+        } else if(fromTile.getPiece().isMoveValid(fromTile, toTile) &&
+                checkIfClearWay(fromTile, toTile) && getTile(toX, toY).isEmptyTile()){
+            return true;
+        }
+        return false;
+    }
+
 }

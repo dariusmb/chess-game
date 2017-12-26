@@ -9,7 +9,6 @@ import game.Tile;
  * Created by Bogdan Darius on 12/10/2017.
  */
 public abstract class Piece {
-//TODO remove coordinates from piece and make movevalid take fromTile to toTile
 //TODO remove isfirstmove from other pieces
     private Color color;
     private boolean isAlive;

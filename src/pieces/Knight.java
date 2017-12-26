@@ -1,8 +1,6 @@
 package pieces;
 
-import game.Board;
 import game.Color;
-import game.Player;
 import game.Tile;
 
 import static java.lang.StrictMath.abs;
@@ -17,11 +15,9 @@ public class Knight extends Piece{
         super(color, true);
     }
 
-//    @Override
+    @Override
     public boolean isMoveValid(Tile fromTile, Tile toTile) {
-//        if(board.getTile(toX, toY).getPiece() != null && board.getTile(toX, toY).getPiece().getColor() == this.getColor()){
-//            System.out.println("Cannot capture your own piece");
-//    }
+
         super.isMoveValid(fromTile, toTile);
         if (abs(fromTile.getX() - toTile.getX()) == 2 && abs(fromTile.getY() - toTile.getY()) == 1){
             return true;

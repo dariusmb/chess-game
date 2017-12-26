@@ -13,6 +13,7 @@ import static java.lang.Math.abs;
 public class Pawn extends Piece{
 
     private boolean isFirstMove;
+    private boolean jumpOneSpace;
 
     public Pawn(Color color){
         super(color, true);
@@ -30,8 +31,10 @@ public class Pawn extends Piece{
 
         if(this.getColor() == Color.BLACK){
             if(fromY  == toY && fromX + 1 == toX){
+                this.jumpOneSpace = false;
                 return true;
             } else if(fromX + 2 == toX  && isFirstMove && fromY == toY/* && board.getTile(toX + 1, toY).isEmptyTile() */){
+                this.jumpOneSpace = true;
                 return true;
             }
         }
@@ -39,8 +42,10 @@ public class Pawn extends Piece{
         // if color is black can only move upwards
         if(this.getColor() == Color.WHITE){
             if(fromX - 1 == toX && fromY  == toY){
+                this.jumpOneSpace = false;
                 return true;
             } else if (fromY == toY && fromX - 2 == toX && isFirstMove /* && board.getTile(toX  - 1, toY).isEmptyTile()*/){
+                this.jumpOneSpace = true;
                 return true;
            }
         }
@@ -48,6 +53,13 @@ public class Pawn extends Piece{
         return false;
     }
 
+    public boolean isJumpOneSpace() {
+        return jumpOneSpace;
+    }
+
+    public void setJumpOneSpace(boolean jumpOneSpace) {
+        this.jumpOneSpace = jumpOneSpace;
+    }
 
     @Override
     public String toString() {

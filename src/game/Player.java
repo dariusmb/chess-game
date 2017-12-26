@@ -12,6 +12,7 @@ public class Player {
     private Color color;
     private String name;
     private ArrayList<Piece> pieces;
+
     public Player(){
        this(null, null);
     }
