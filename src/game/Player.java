@@ -12,6 +12,7 @@ public class Player {
     private Color color;
     private String name;
     private ArrayList<Piece> pieces;
+    private Tile kingTile;
 
     public Player(){
        this(null, null);
@@ -39,12 +40,21 @@ public class Player {
         return pieces;
     }
 
+    public Tile getKingTile() {
+        return kingTile;
+    }
+
+    public void setKingTile(Tile kingTile) {
+        this.kingTile = kingTile;
+    }
+
     @Override
     public String toString() {
         return "Player{" +
                 "color=" + color +
                 ", name='" + name + '\'' +
                 ", pieces=" + pieces +
+                ", kingTile=" + kingTile +
                 '}';
     }
 }

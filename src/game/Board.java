@@ -94,6 +94,7 @@ public class Board {
         black.getPieces().add(knight);
         black.getPieces().add(queen);
         black.getPieces().add(king);
+        black.setKingTile(this.getTile(0, 4));
 
         pawn = new Pawn(Color.WHITE);
         rook = new Rook(Color.WHITE);
@@ -118,8 +119,7 @@ public class Board {
         this.getTile(7, 5).setPiece(knight);
         this.getTile(7, 3).setPiece(queen);
         this.getTile(7, 4).setPiece(king);
-        //for testing
-        this.getTile(3, 2).setPiece(pawn);
+
 
         white.getPieces().add(pawn);
         white.getPieces().add(pawn);
@@ -137,6 +137,7 @@ public class Board {
         white.getPieces().add(knight);
         white.getPieces().add(queen);
         white.getPieces().add(king);
+        white.setKingTile(this.getTile(7, 4));
     }
 
     public void showPieces(){
@@ -233,10 +234,13 @@ public class Board {
             return;
         }
 
-        if((movedPiece instanceof Pawn && movePawn(player, fromTile, toTile)) ||
-                (movedPiece.isMoveValid(fromTile, toTile) && checkIfClearWay(fromTile, toTile) && !(movedPiece instanceof Pawn))){
+        if((movedPiece instanceof Pawn && movePawn(player, fromTile, toTile)) || (movedPiece.isMoveValid(fromTile, toTile)
+                && checkIfClearWay(fromTile, toTile) && !(movedPiece instanceof Pawn))){
             if(toTile.getPiece() != null){
                 removedPieces.add(toTile.getPiece());
+            }
+            if(movedPiece instanceof King){
+                player.setKingTile(toTile);
             }
             lastMove = toTile;
             movedPiece.setFirstMove(false);
@@ -280,4 +284,97 @@ public class Board {
         return false;
     }
 
+    public  final boolean isThreatenTile(Color threatenedColor, Tile threatenedTile){
+
+        int rowDirections[] = {-1, -1, -1, 0, 0, 1, 1, 1};
+        int colDirections[] = {-1, 0, 1, -1, 1, -1, 0, 1};
+        boolean bishopThreats[] = {true, false, true, false, false, true, false, true};
+        boolean rookThreats[] = {false, true, false, true, true, false, true, false};
+        boolean queenThreats[] = {true, true, true, true, true, true, true, true};
+        boolean kingThreats[] = {true, true, true, true, true, true, true, true};
+        boolean kill = threatenedColor == Color.BLACK;
+        boolean pawnThreats[] = {kill, false, kill, false, false, !kill, false, !kill};
+
+        boolean threatDetected = false;
+        int threatenedRow = threatenedTile.getX();
+        int threatenedCol = threatenedTile.getY();
+
+        threatDetected = knightThreat(threatenedColor, threatenedTile);
+
+        for (int direction = 0; direction < 8 && !threatDetected; direction++){
+            // reset our coordinates to process current line of attack
+            // increment values are same as direction array values
+
+            int row = threatenedRow;
+            int col = threatenedCol;
+            int rowIncrement = rowDirections[direction];
+            int colIncrement = colDirections[direction];
+
+            //radiate outwards starting from origin until we hit a piece or we are out of bounds
+            for (int step = 0; step < 8; step++){
+                row = row + rowIncrement;
+                col = col + colIncrement;
+
+                //if we are out of bounds we stop radiating outwards for this ray and try with next one
+                if (row < 0 || row > 7 || col < 0 || col > 7){
+                    break;
+                } else {
+                    //look at current tile and see if it is occupied by a piece
+                    Tile tile = getTile(row, col);
+                    Piece piece = tile.getPiece();
+
+                    if (piece != null){
+                        if (!(piece.getColor() == threatenedColor)){
+                            //opponents piece, must check if the piece can attack us
+                            if (piece instanceof Bishop && bishopThreats[direction]){
+                                threatDetected = true;
+                            } else if (piece instanceof Rook && rookThreats[direction]){
+                                threatDetected = true;
+                            } else if (piece instanceof Queen && queenThreats[direction]){
+                                threatDetected = true;
+                            } else {
+                                if(step == 0){
+                                    if (piece instanceof Pawn && pawnThreats[direction])
+                                        threatDetected = true;
+                                    if(piece instanceof  King && kingThreats[direction])
+                                        threatDetected = true;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        return threatDetected;
+    }
+
+    private  boolean knightThreat(Color threatenedColor, Tile threatenedTile){
+
+        boolean threatDetected = false;
+        int threatenedRow = threatenedTile.getX();
+        int threatenedCol = threatenedTile.getY();
+
+        int rowDirection[] = {-2, -1, 1, 2, 2, 1, -1, -2};
+        int colDirection[] = {-1, -2, -2, -1, 1, 2, 2, 1};
+
+        for(int direction = 0; direction < 8 && !threatDetected; direction++){
+
+            int row = threatenedRow + rowDirection[direction];
+            int col = threatenedCol + colDirection[direction];
+
+            if (!(row < 0 || row > 7 || col < 0 || col > 7)){
+
+                Tile tile = getTile(row, col);
+                Piece piece = tile.getPiece();
+
+                if(piece != null && !(piece.getColor() == threatenedColor) && piece instanceof Knight){
+                   threatDetected = true;
+                }
+            }
+        }
+
+        return threatDetected;
+    }
 }
