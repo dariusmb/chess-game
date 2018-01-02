@@ -12,12 +12,12 @@ import static java.lang.Math.abs;
  */
 public class Pawn extends Piece{
 
-    private boolean isFirstMove;
+//    private boolean isFirstMove;
     private boolean jumpOneSpace;
 
     public Pawn(Color color){
         super(color, true);
-        this.isFirstMove = true;
+//        this.isFirstMove = true;
     }
 
     public boolean isMoveValid(Tile fromTile, Tile toTile) {

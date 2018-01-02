@@ -55,86 +55,107 @@ public class Board {
             black = player2;
         }
         Pawn pawn = new Pawn(Color.BLACK);
+        Pawn pawn1 = new Pawn(Color.BLACK);
+        Pawn pawn2 = new Pawn(Color.BLACK);
+        Pawn pawn3 = new Pawn(Color.BLACK);
+        Pawn pawn4 = new Pawn(Color.BLACK);
+        Pawn pawn5 = new Pawn(Color.BLACK);
+        Pawn pawn6 = new Pawn(Color.BLACK);
+        Pawn pawn7 = new Pawn(Color.BLACK);
         Rook rook = new Rook(Color.BLACK);
+        Rook rook1 = new Rook(Color.BLACK);
         Bishop bishop = new Bishop(Color.BLACK);
+        Bishop bishop1 = new Bishop(Color.BLACK);
         Knight knight = new Knight(Color.BLACK);
+        Knight knight1 = new Knight(Color.BLACK);
         Queen queen = new Queen(Color.BLACK);
         King king = new King(Color.BLACK);
 
         this.getTile(1, 0).setPiece(pawn);
-        this.getTile(1, 1).setPiece(pawn);
-        this.getTile(1, 2).setPiece(pawn);
-        this.getTile(1, 3).setPiece(pawn);
-        this.getTile(1, 4).setPiece(pawn);
-        this.getTile(1, 5).setPiece(pawn);
-        this.getTile(1, 6).setPiece(pawn);
-        this.getTile(1, 7).setPiece(pawn);
+        this.getTile(1, 1).setPiece(pawn1);
+        this.getTile(1, 2).setPiece(pawn2);
+        this.getTile(1, 3).setPiece(pawn3);
+//        this.getTile(1, 4).setPiece(pawn4);
+        this.getTile(1, 5).setPiece(pawn5);
+        this.getTile(1, 6).setPiece(pawn6);
+        this.getTile(1, 7).setPiece(pawn7);
         this.getTile(0, 0).setPiece(rook);
-        this.getTile(0, 7).setPiece(rook);
+        this.getTile(0, 7).setPiece(rook1);
         this.getTile(0, 1).setPiece(bishop);
-        this.getTile(0, 6).setPiece(bishop);
+        this.getTile(0, 6).setPiece(bishop1);
         this.getTile(0, 2).setPiece(knight);
-        this.getTile(0, 5).setPiece(knight);
+        this.getTile(0, 5).setPiece(knight1);
         this.getTile(0, 3).setPiece(queen);
-        this.getTile(0, 4).setPiece(king);
+        this.getTile(1, 4).setPiece(king);
 
         black.getPieces().add(pawn);
-        black.getPieces().add(pawn);
-        black.getPieces().add(pawn);
-        black.getPieces().add(pawn);
-        black.getPieces().add(pawn);
-        black.getPieces().add(pawn);
-        black.getPieces().add(pawn);
-        black.getPieces().add(pawn);
+        black.getPieces().add(pawn1);
+        black.getPieces().add(pawn2);
+        black.getPieces().add(pawn3);
+        black.getPieces().add(pawn4);
+        black.getPieces().add(pawn5);
+        black.getPieces().add(pawn6);
+        black.getPieces().add(pawn7);
         black.getPieces().add(rook);
-        black.getPieces().add(rook);
+        black.getPieces().add(rook1);
         black.getPieces().add(bishop);
-        black.getPieces().add(bishop);
+        black.getPieces().add(bishop1);
         black.getPieces().add(knight);
-        black.getPieces().add(knight);
+        black.getPieces().add(knight1);
         black.getPieces().add(queen);
         black.getPieces().add(king);
-        black.setKingTile(this.getTile(0, 4));
+        black.setKingTile(this.getTile(1, 4));
 
         pawn = new Pawn(Color.WHITE);
+        pawn1 = new Pawn(Color.WHITE);
+        pawn2 = new Pawn(Color.WHITE);
+        pawn3 = new Pawn(Color.WHITE);
+        pawn4 = new Pawn(Color.WHITE);
+        pawn5 = new Pawn(Color.WHITE);
+        pawn6 = new Pawn(Color.WHITE);
+        pawn7 = new Pawn(Color.WHITE);
         rook = new Rook(Color.WHITE);
+        rook1 = new Rook(Color.WHITE);
         bishop = new Bishop(Color.WHITE);
+        bishop1 = new Bishop(Color.WHITE);
         knight = new Knight(Color.WHITE);
+        knight1 = new Knight(Color.WHITE);
         queen = new Queen(Color.WHITE);
         king = new King(Color.WHITE);
 
         this.getTile(6, 0).setPiece(pawn);
-        this.getTile(6, 1).setPiece(pawn);
-        this.getTile(6, 2).setPiece(pawn);
-        this.getTile(6, 3).setPiece(pawn);
-        this.getTile(6, 4).setPiece(pawn);
-        this.getTile(6, 5).setPiece(pawn);
-        this.getTile(6, 6).setPiece(pawn);
-        this.getTile(6, 7).setPiece(pawn);
+        this.getTile(6, 1).setPiece(pawn1);
+        this.getTile(6, 2).setPiece(pawn2);
+        this.getTile(6, 3).setPiece(pawn3);
+        this.getTile(6, 4).setPiece(pawn4);
+        this.getTile(6, 5).setPiece(pawn5);
+        this.getTile(6, 6).setPiece(pawn6);
+        this.getTile(6, 7).setPiece(pawn7);
         this.getTile(7, 0).setPiece(rook);
-        this.getTile(7, 7).setPiece(rook);
+        this.getTile(7, 7).setPiece(rook1);
         this.getTile(7, 1).setPiece(bishop);
-        this.getTile(7, 6).setPiece(bishop);
+        this.getTile(7, 6).setPiece(bishop1);
         this.getTile(7, 2).setPiece(knight);
-        this.getTile(7, 5).setPiece(knight);
+        this.getTile(7, 5).setPiece(knight1);
         this.getTile(7, 3).setPiece(queen);
         this.getTile(7, 4).setPiece(king);
+        //testing
+        this.getTile(2,4).setPiece(queen);
 
-
         white.getPieces().add(pawn);
-        white.getPieces().add(pawn);
-        white.getPieces().add(pawn);
-        white.getPieces().add(pawn);
-        white.getPieces().add(pawn);
-        white.getPieces().add(pawn);
-        white.getPieces().add(pawn);
-        white.getPieces().add(pawn);
+        white.getPieces().add(pawn1);
+        white.getPieces().add(pawn2);
+        white.getPieces().add(pawn3);
+        white.getPieces().add(pawn4);
+        white.getPieces().add(pawn5);
+        white.getPieces().add(pawn6);
+        white.getPieces().add(pawn7);
         white.getPieces().add(rook);
-        white.getPieces().add(rook);
+        white.getPieces().add(rook1);
         white.getPieces().add(bishop);
-        white.getPieces().add(bishop);
+        white.getPieces().add(bishop1);
         white.getPieces().add(knight);
-        white.getPieces().add(knight);
+        white.getPieces().add(knight1);
         white.getPieces().add(queen);
         white.getPieces().add(king);
         white.setKingTile(this.getTile(7, 4));
@@ -234,21 +255,66 @@ public class Board {
             return;
         }
 
-        if((movedPiece instanceof Pawn && movePawn(player, fromTile, toTile)) || (movedPiece.isMoveValid(fromTile, toTile)
-                && checkIfClearWay(fromTile, toTile) && !(movedPiece instanceof Pawn))){
-            if(toTile.getPiece() != null){
-                removedPieces.add(toTile.getPiece());
+        if(isThreatenTile(player.getColor(), player.getKingTile())){
+            // the player is in check
+
+            if(checkIfCheckMate(player.getKingTile())){
+                //TODO check mate
+            } else {
+                if (movedPiece.isMoveValid(fromTile, toTile)){
+                    //if the move is valid, simulate the move
+                    Tile tile = new Tile(toTile.getX(), toTile.getY());
+                    tile.setPiece(toTile.getPiece());
+
+                    toTile.setPiece(fromTile.getPiece());
+                    fromTile.setPiece(null);
+                    if(fromTile.getPiece() instanceof King){
+                        player.setKingTile(toTile);
+                    }
+
+                    if(!isThreatenTile(player.getColor(), player.getKingTile())){
+                        //the move made the check disappear so it's a valid move
+                        fromTile.setPiece(toTile.getPiece());
+                        toTile.setPiece(tile.getPiece());
+                        makeMove(player, fromTile, toTile);
+                    } else {
+                        //not a valid move, still in check, so move the pieces back
+                        if(fromTile.getPiece() instanceof King){
+                            player.setKingTile(fromTile);
+                        }
+                        fromTile.setPiece(toTile.getPiece());
+                        toTile.setPiece(tile.getPiece());
+                    }
+                }
             }
-            if(movedPiece instanceof King){
-                player.setKingTile(toTile);
-            }
-            lastMove = toTile;
-            movedPiece.setFirstMove(false);
-            toTile.setPiece(fromTile.getPiece());
-            fromTile.setPiece(null);
+            return;
+        }
+
+        if((movedPiece instanceof Pawn && movePawn(player, fromTile, toTile))){
+            makeMove(player, fromTile, toTile);
+        } else  if (movedPiece instanceof King && movedPiece.isMoveValid(fromTile, toTile) &&
+                !isThreatenTile(player.getColor(), toTile)){
+            makeMove(player, fromTile, toTile);
+        } else if(movedPiece.isMoveValid(fromTile, toTile)
+                && checkIfClearWay(fromTile, toTile) && !(movedPiece instanceof Pawn) && !(movedPiece instanceof King)){
+            makeMove(player, fromTile, toTile);
         }
 
         System.out.println(removedPieces);
+    }
+
+    //Make the move on the board
+    private void makeMove(Player player, Tile fromTile, Tile toTile){
+        if(toTile.getPiece() != null){
+            removedPieces.add(toTile.getPiece());
+        }
+        if(fromTile.getPiece() instanceof King){
+            player.setKingTile(toTile);
+        }
+        lastMove = toTile;
+        fromTile.getPiece().setFirstMove(false);
+        toTile.setPiece(fromTile.getPiece());
+        fromTile.setPiece(null);
     }
 
     private boolean movePawn(Player player, Tile fromTile, Tile toTile){
@@ -293,7 +359,7 @@ public class Board {
         boolean queenThreats[] = {true, true, true, true, true, true, true, true};
         boolean kingThreats[] = {true, true, true, true, true, true, true, true};
         boolean kill = threatenedColor == Color.BLACK;
-        boolean pawnThreats[] = {kill, false, kill, false, false, !kill, false, !kill};
+        boolean pawnThreats[] = {!kill, false, !kill, false, false, kill, false, kill};
 
         boolean threatDetected = false;
         int threatenedRow = threatenedTile.getX();
@@ -377,4 +443,36 @@ public class Board {
 
         return threatDetected;
     }
+
+//    public boolean checkIfCheckMate(Tile kingTile){
+
+//        ArrayList<Tile> possibleMoves = new ArrayList<>();
+//
+//
+//        int rowDirections[] = {-1, -1, -1, 0, 0, 1, 1, 1};
+//        int colDirections[] = {-1, 0, 1, -1, 1, -1, 0, 1};
+//
+//        int kingRow = kingTile.getX();
+//        int kingCol = kingTile.getY();
+//        Color color = kingTile.getPiece().getColor();
+//
+//        for(int direction = 0; direction < 8; direction++){
+//
+//            int row = kingRow + rowDirections[direction];
+//            int col = kingCol + colDirections[direction];
+//            Tile tile = getTile(row, col);
+//
+//            if (!isThreatenTile(color, tile)){
+//                possibleMoves.add(tile);
+//            }
+//        }
+//
+//        if(possibleMoves.size() == 0){
+//            System.out.println("Check mate");
+//            return true;
+//        }
+//
+//        return false;
+//    }
+
 }
