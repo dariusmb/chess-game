@@ -30,6 +30,6 @@ public class Bishop  extends Piece{
 
     @Override
     public String toString() {
-        return "B" + (this.getColor() == Color.BLACK ? "B " : "W ");
+        return "B" + (this.getColor() == Color.BLACK ? "B" : "W");
     }
 }

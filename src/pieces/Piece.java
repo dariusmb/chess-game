@@ -40,6 +40,7 @@ public abstract class Piece {
         return isAlive;
     }
 
+
     public boolean isMoveValid(Tile fromTile, Tile toTile) {
 
         //same coordinates

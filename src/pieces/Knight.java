@@ -32,7 +32,7 @@ public class Knight extends Piece{
 
     @Override
     public String toString() {
-        return "Kn" + (this.getColor() == Color.BLACK ? "B " : "W ");
+        return "Kn" + (this.getColor() == Color.BLACK ? "B" : "W");
     }
 
 

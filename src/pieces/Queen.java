@@ -31,6 +31,6 @@ public class Queen extends Piece{
 
     @Override
     public String toString() {
-        return "Q" + (this.getColor() == Color.BLACK ? "B " : "W ");
+        return "Q" + (this.getColor() == Color.BLACK ? "B" : "W");
     }
 }
