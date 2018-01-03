@@ -12,7 +12,7 @@ public abstract class Piece {
 //TODO remove isfirstmove from other pieces
     private Color color;
     private boolean isAlive;
-    public boolean isFirstMove;
+    private boolean isFirstMove;
 
     public Piece(Color color, boolean isAlive){
         this.color = color;

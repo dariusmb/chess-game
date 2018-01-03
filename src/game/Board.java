@@ -134,8 +134,6 @@ public class Board {
         this.getTile(7, 6).setPiece(knight1);
         this.getTile(7, 3).setPiece(queen);
         this.getTile(7, 4).setPiece(king);
-        //testing
-//        this.getTile(2,4).setPiece(queen);
 
         whitePlayer.getPieces().add(pawn);
         whitePlayer.getPieces().add(pawn1);
@@ -294,12 +292,14 @@ public class Board {
 
         if((movedPiece instanceof Pawn && movePawn(player, fromTile, toTile))){
             makeMove(player, fromTile, toTile);
-        } else  if (movedPiece instanceof King && movedPiece.isMoveValid(fromTile, toTile) &&
+        } else if (movedPiece instanceof King && movedPiece.isMoveValid(fromTile, toTile) &&
                 !isThreatenTile(player.getColor(), toTile)){
             makeMove(player, fromTile, toTile);
+        } else if(movedPiece instanceof King && fromTile.getY() - 3 == toTile.getY() || fromTile.getY() + 2 == toTile.getY()
+                && fromTile.getX() == toTile.getX()) {
+            tryToDoTheCastling(player,fromTile,toTile);
         } else if(movedPiece.isMoveValid(fromTile, toTile)
                 && checkIfClearWay(fromTile, toTile) && !(movedPiece instanceof Pawn) && !(movedPiece instanceof King)){
-            System.out.println("here");
             makeMove(player, fromTile, toTile);
         }
 
@@ -321,7 +321,15 @@ public class Board {
         }
         lastMove = toTile;
         fromTile.getPiece().setFirstMove(false);
-        toTile.setPiece(fromTile.getPiece());
+
+        //pawn promotion to queen
+        if(fromTile.getPiece() instanceof Pawn && toTile.getX() == 0){
+            Queen queen = new Queen(player.getColor());
+            toTile.setPiece(queen);
+        } else {
+            toTile.setPiece(fromTile.getPiece());
+        }
+
         fromTile.setPiece(null);
     }
 
@@ -358,7 +366,7 @@ public class Board {
         return false;
     }
 
-    public  final boolean isThreatenTile(Color threatenedColor, Tile threatenedTile){
+    private  final boolean isThreatenTile(Color threatenedColor, Tile threatenedTile){
 
         int rowDirections[] = {-1, -1, -1, 0, 0, 1, 1, 1};
         int colDirections[] = {-1, 0, 1, -1, 1, -1, 0, 1};
@@ -369,7 +377,7 @@ public class Board {
         boolean kill = threatenedColor == Color.BLACK;
         boolean pawnThreats[] = {!kill, false, !kill, false, false, kill, false, kill};
 
-        boolean threatDetected = false;
+        boolean threatDetected;
         int threatenedRow = threatenedTile.getX();
         int threatenedCol = threatenedTile.getY();
 
@@ -450,6 +458,37 @@ public class Board {
         }
 
         return threatDetected;
+    }
+
+    private void tryToDoTheCastling(Player player, Tile fromTile, Tile toTile){
+        int colOffset;
+        Tile rookTile;
+        Tile newRookTile;
+
+        if (toTile.getY() < fromTile.getY()) {
+            colOffset = -1;
+            rookTile = getTile(7, 0);
+            newRookTile = getTile(7, 2);
+        } else {
+            colOffset = 1;
+            rookTile = getTile(7, 7);
+            newRookTile = getTile(7, 5);
+        }
+
+        if (fromTile.getPiece().isFirstMove() && rookTile.getPiece().isFirstMove()
+                && checkIfClearWayOnLine(fromTile, rookTile)) {
+            for (int i = fromTile.getY() + colOffset; i != rookTile.getY(); i += colOffset) {
+                if (isThreatenTile(fromTile.getPiece().getColor(), getTile(toTile.getX(), i))) {
+                    return ;
+                }
+            }
+        } else {
+            return ;
+        }
+
+        makeMove(player, fromTile, toTile);
+        makeMove(player, rookTile, newRookTile);
+
     }
 
     public boolean checkIfCheckMate(Tile kingTile){

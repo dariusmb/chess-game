@@ -33,7 +33,7 @@ public class Pawn extends Piece{
             if(fromY  == toY && fromX + 1 == toX){
                 this.jumpOneSpace = false;
                 return true;
-            } else if(fromX + 2 == toX  && isFirstMove && fromY == toY/* && board.getTile(toX + 1, toY).isEmptyTile() */){
+            } else if(fromX + 2 == toX  && super.isFirstMove() && fromY == toY/* && board.getTile(toX + 1, toY).isEmptyTile() */){
                 this.jumpOneSpace = true;
                 return true;
             }
@@ -44,7 +44,7 @@ public class Pawn extends Piece{
             if(fromX - 1 == toX && fromY  == toY){
                 this.jumpOneSpace = false;
                 return true;
-            } else if (fromY == toY && fromX - 2 == toX && isFirstMove /* && board.getTile(toX  - 1, toY).isEmptyTile()*/){
+            } else if (fromY == toY && fromX - 2 == toX && super.isFirstMove() /* && board.getTile(toX  - 1, toY).isEmptyTile()*/){
                 this.jumpOneSpace = true;
                 return true;
            }
