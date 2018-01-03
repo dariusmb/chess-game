@@ -260,48 +260,48 @@ public class Board {
             return ;
         }
 
-        if(isThreatenTile(player.getColor(), player.getKingTile(), false)){
-            // the player is in check
-            if (movedPiece.isMoveValid(fromTile, toTile) || (movedPiece instanceof Pawn && movePawn(player, fromTile, toTile))){
-                //if the move is valid, simulate the move
-                Tile tile = new Tile(toTile.getX(), toTile.getY());
-                tile.setPiece(toTile.getPiece());
-
-                toTile.setPiece(fromTile.getPiece());
-                if(fromTile.getPiece() instanceof King){
-                    player.setKingTile(toTile);
-                }
-                fromTile.setPiece(null);
-                if(!isThreatenTile(player.getColor(), player.getKingTile(), false)){
-                    //the move made the check disappear so it's a valid move
-                    fromTile.setPiece(toTile.getPiece());
-                    toTile.setPiece(tile.getPiece());
-                    makeMove(player, fromTile, toTile);
-                } else {
-                    //not a valid move, still in check, so move the pieces back
-                    if(fromTile.getPiece() instanceof King){
-                        player.setKingTile(fromTile);
-                    }
-                    fromTile.setPiece(toTile.getPiece());
-                    toTile.setPiece(tile.getPiece());
-                    return ;
-                }
-            }
-
-            return ;
-        }
+//        if(isThreatenTile(player.getColor(), player.getKingTile(), false)){
+//            // the player is in check
+//            if (movedPiece.isMoveValid(fromTile, toTile) || (movedPiece instanceof Pawn && movePawn(player, fromTile, toTile))){
+//                //if the move is valid, simulate the move
+//                Tile tile = new Tile(toTile.getX(), toTile.getY());
+//                tile.setPiece(toTile.getPiece());
+//
+//                toTile.setPiece(fromTile.getPiece());
+//                if(fromTile.getPiece() instanceof King){
+//                    player.setKingTile(toTile);
+//                }
+//                fromTile.setPiece(null);
+//                if(!isThreatenTile(player.getColor(), player.getKingTile(), false)){
+//                    //the move made the check disappear so it's a valid move
+//                    fromTile.setPiece(toTile.getPiece());
+//                    toTile.setPiece(tile.getPiece());
+//                    makeMove(player, fromTile, toTile);
+//                } else {
+//                    //not a valid move, still in check, so move the pieces back
+//                    if(fromTile.getPiece() instanceof King){
+//                        player.setKingTile(fromTile);
+//                    }
+//                    fromTile.setPiece(toTile.getPiece());
+//                    toTile.setPiece(tile.getPiece());
+//                    return ;
+//                }
+//            }
+//
+//            return ;
+//        }
 
         if((movedPiece instanceof Pawn && movePawn(player, fromTile, toTile))){
-            makeMove(player, fromTile, toTile);
+            validateMove(player, fromTile, toTile);
         } else if (movedPiece instanceof King && movedPiece.isMoveValid(fromTile, toTile) &&
                 !isThreatenTile(player.getColor(), toTile, false)){
-            makeMove(player, fromTile, toTile);
-        } else if(movedPiece instanceof King && fromTile.getY() - 3 == toTile.getY() || fromTile.getY() + 2 == toTile.getY()
+            validateMove(player, fromTile, toTile);
+        } else if(movedPiece instanceof King && (fromTile.getY() - 3 == toTile.getY() || fromTile.getY() + 2 == toTile.getY())
                 && fromTile.getX() == toTile.getX()) {
             tryToDoTheCastling(fromTile,toTile);
         } else if(movedPiece.isMoveValid(fromTile, toTile)
                 && checkIfClearWay(fromTile, toTile) && !(movedPiece instanceof Pawn) && !(movedPiece instanceof King)){
-            makeMove(player, fromTile, toTile);
+            validateMove(player, fromTile, toTile);
         }
 
         if(isThreatenTile(currentPlayer.getColor(), currentPlayer.getKingTile(), false)){
@@ -312,6 +312,8 @@ public class Board {
                 this.isCheck = true;
                 System.out.println("check");
             }
+        } else {
+            this.isCheck = false;
         }
         System.out.println(removedPieces);
     }
@@ -333,7 +335,7 @@ public class Board {
         fromTile.getPiece().setFirstMove(false);
 
         //pawn promotion to queen
-        if(fromTile.getPiece() instanceof Pawn && toTile.getX() == 0){
+        if(fromTile.getPiece() instanceof Pawn && (toTile.getX() == 0 || toTile.getX() == 7)){
             Queen queen = new Queen(player.getColor());
             toTile.setPiece(queen);
         } else {
@@ -343,6 +345,29 @@ public class Board {
         fromTile.setPiece(null);
     }
 
+    private void validateMove(Player player, Tile fromTile, Tile toTile){
+        Tile tile = new Tile(toTile.getX(), toTile.getY());
+        tile.setPiece(toTile.getPiece());
+
+        toTile.setPiece(fromTile.getPiece());
+        if(fromTile.getPiece() instanceof King){
+            player.setKingTile(toTile);
+        }
+        fromTile.setPiece(null);
+        if(!isThreatenTile(player.getColor(), player.getKingTile(), false)){
+            //the move made the check disappear so it's a valid move
+            fromTile.setPiece(toTile.getPiece());
+            toTile.setPiece(tile.getPiece());
+            makeMove(player, fromTile, toTile);
+        } else {
+            //not a valid move, still in check, so move the pieces back
+            if (fromTile.getPiece() instanceof King) {
+                player.setKingTile(fromTile);
+            }
+            fromTile.setPiece(toTile.getPiece());
+            toTile.setPiece(tile.getPiece());
+        }
+    }
     private boolean movePawn(Player player, Tile fromTile, Tile toTile){
 
         int fromX = fromTile.getX();
@@ -361,7 +386,7 @@ public class Board {
         if ((fromY + 1 == toY || fromY - 1 == toY) && fromX + rowOffset == toX){
             if(!getTile(toX, toY).isEmptyTile()){
                 return true;
-            } else if (lastMove.getX() == toX - rowOffset && lastMove.getY() == toY && ((Pawn)lastMove.getPiece()).isJumpOneSpace()){
+            } else if (lastMove != null && lastMove.getX() == toX - rowOffset && lastMove.getY() == toY && ((Pawn)lastMove.getPiece()).isJumpOneSpace()){
                 System.out.println("en passant");
                 removedPieces.add(lastMove.getPiece());
                 lastMove.setPiece(null);
@@ -376,7 +401,7 @@ public class Board {
         return false;
     }
 
-    private  final boolean isThreatenTile(Color threatenedColor, Tile threatenedTile, boolean exceptKing){
+    private boolean isThreatenTile(Color threatenedColor, Tile threatenedTile, boolean exceptKing){
 
         int rowDirections[] = {-1, -1, -1, 0, 0, 1, 1, 1};
         int colDirections[] = {-1, 0, 1, -1, 1, -1, 0, 1};

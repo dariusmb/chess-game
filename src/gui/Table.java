@@ -1,6 +1,7 @@
 package gui;
 
 import game.*;
+import javafx.scene.layout.TilePane;
 import pieces.Piece;
 
 import javax.imageio.ImageIO;
@@ -24,7 +25,7 @@ import static javax.swing.SwingUtilities.isRightMouseButton;
 /**
  * Created by Bogdan Darius on 1/2/2018.
  */
-public class Table {
+public class Table extends Observable{
 
     private final JFrame gameFrame;
     private final TakenPiecesPanel takenPiecesPanel;
@@ -34,7 +35,7 @@ public class Table {
     private Tile toTile;
     private Piece movedPiece;
 
-    private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(700, 700);
+    private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(800, 800);
     private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(600, 600);
     private final static Dimension TILE_PANEL_DIMENSION = new Dimension(10, 10);
     private static String pieceIconPath = "src/resources/";
@@ -49,6 +50,7 @@ public class Table {
         chessBoard.initializeBoard();
         this.takenPiecesPanel = new TakenPiecesPanel();
         this.boardPanel = new BoardPanel();
+        this.addObserver(new ChessCheck());
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
         this.gameFrame.add(this.takenPiecesPanel, BorderLayout.EAST);
         this.gameFrame.setVisible(true);
@@ -84,7 +86,34 @@ public class Table {
         }
     }
 
+    private class ChessCheck implements Observer{
 
+        @Override
+        public void update(Observable o, Object arg) {
+
+            if (chessBoard.isCheckMate()) {
+                JOptionPane.showMessageDialog(boardPanel,
+                        "Game Over: Player " + chessBoard.getCurrentPlayer().getColor() + " is in checkmate!", "Game Over",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            if (chessBoard.isCheck()) {
+                TilePanel tilePanel = getTilePanel(boardPanel, chessBoard.getCurrentPlayer().getKingTile().getX(),
+                        chessBoard.getCurrentPlayer().getKingTile().getY());
+                    tilePanel.setBackground(Color.red);
+
+            }
+        }
+    }
+
+    public TilePanel getTilePanel(final BoardPanel boardPanel, final int tileRow, final int tileCol){
+        for(final TilePanel tilePanel: boardPanel.boardTiles){
+            if(tilePanel.tileRow == tileRow && tilePanel.tileCol == tileCol){
+                return tilePanel;
+            }
+        }
+        return null;
+    }
 
     private class TilePanel extends JPanel {
 
@@ -98,6 +127,7 @@ public class Table {
             setPreferredSize(TILE_PANEL_DIMENSION);
             assignTileColor(tileRow, tileCol);
             assignTilePieceIcon(chessBoard);
+            highlightTile(chessBoard);
             addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(final MouseEvent e) {
@@ -118,23 +148,27 @@ public class Table {
                             if(movedPiece == null){
                                 fromTile = null;
                             }
+
                         } else {
                             //if another tile is clicked before
                             toTile = chessBoard.getTile(tileRow, tileCol);
                             if(chessBoard.getCurrentPlayer().getColor() == fromTile.getPiece().getColor()){
                                 chessBoard.move(chessBoard.getCurrentPlayer(), fromTile, toTile);
+
                                 fromTile = null;
                                 toTile = null;
                                 movedPiece = null;
                             }
-                            invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    takenPiecesPanel.redo(chessBoard);
-                                    boardPanel.drawBoard(chessBoard);
-                                }
-                            });
                         }
+                        invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                takenPiecesPanel.redo(chessBoard);
+                                boardPanel.drawBoard(chessBoard);
+                                setChanged();
+                                notifyObservers();
+                            }
+                        });
                     }
                 }
 
@@ -161,9 +195,21 @@ public class Table {
             validate();
         }
 
+
+
+        private void highlightTile(final Board board){
+            if(movedPiece != null && movedPiece.getColor() == chessBoard.getCurrentPlayer().getColor()
+                    && movedPiece == chessBoard.getTile(tileRow, tileCol).getPiece()){
+                setBorder(BorderFactory.createLineBorder(Color.green, 2));
+            } else {
+                setBorder(BorderFactory.createLineBorder(Color.gray));
+            }
+        }
+
         public void drawTile(final Board board){
             assignTileColor(this.tileRow, this.tileCol);
             assignTilePieceIcon(board);
+            highlightTile(chessBoard);
             validate();
             repaint();
         }
