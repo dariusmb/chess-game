@@ -5,35 +5,30 @@ import pieces.Piece;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
  * Created by Bogdan Darius on 1/3/2018.
  */
-public class TakenPiecesPanel extends JPanel {
+class TakenPiecesPanel extends JPanel {
 
     private final JPanel upPanel;
     private final JPanel downPanel;
-    private static final EtchedBorder PANEL_BORDER = new EtchedBorder(EtchedBorder.RAISED);
     private static final Color PANEL_COLOR = Color.decode("#f4f4f4");
     private static final Dimension TAKEN_PIECES_DIMENSION = new Dimension(120, 80);
-    public TakenPiecesPanel() {
+    TakenPiecesPanel() {
         super(new BorderLayout());
         setBackground(PANEL_COLOR);
-        setBorder(PANEL_BORDER);
-        this.upPanel = new JPanel(new GridLayout(8, 2));
-        this.downPanel = new JPanel(new GridLayout(8, 2));
+        this.upPanel = new JPanel();
+        upPanel.setLayout(new GridLayout(8, 2));
+        this.downPanel = new JPanel();
+        downPanel.setLayout(new GridLayout(8, 2));
         this.upPanel.setBackground(PANEL_COLOR);
         this.downPanel.setBackground(PANEL_COLOR);
         this.add(this.upPanel, BorderLayout.NORTH);
@@ -41,7 +36,7 @@ public class TakenPiecesPanel extends JPanel {
         setPreferredSize(TAKEN_PIECES_DIMENSION);
     }
 
-    public void redo(final Board board){
+    void redo(final Board board){
 
         this.downPanel.removeAll();
         this.upPanel.removeAll();
@@ -49,38 +44,40 @@ public class TakenPiecesPanel extends JPanel {
         final List<Piece> whiteTakenPieces = new ArrayList<>();
         final List<Piece> blackTakenPieces = new ArrayList<>();
 
-        for(final Piece piece: board.getRemovedPieces()){
-            if(piece.getColor() == game.Color.BLACK){
-                blackTakenPieces.add(piece);
-            } else if (piece.getColor() == game.Color.WHITE){
-                whiteTakenPieces.add(piece);
-            } else {
-                throw new RuntimeException("should not reach here");
-            }
-        }
-        for(final Piece takenPiece: whiteTakenPieces){
+//        for(final Piece piece: board.getRemovedPieces()){
+//            if(piece.getColor() == game.Color.BLACK){
+//                blackTakenPieces.add(piece);
+//            } else if (piece.getColor() == game.Color.WHITE){
+//                whiteTakenPieces.add(piece);
+//            } else {
+//                throw new RuntimeException("should not reach here");
+//            }
+//        }
+        for(final Piece takenPiece: board.getRemovedWhitePieces()){
             try{
                 final BufferedImage image = ImageIO.read(new File("src/resources/" + takenPiece.toString() + ".png"));
                 final ImageIcon icon = new ImageIcon(image);
                 final JLabel imageLabel = new JLabel(new ImageIcon(icon.getImage().getScaledInstance(
-                        icon.getIconWidth() - 30, icon.getIconHeight() - 30, Image.SCALE_SMOOTH)));
+                        icon.getIconWidth() - 40, icon.getIconHeight() - 40, Image.SCALE_SMOOTH)));
                 this.downPanel.add(imageLabel);
             } catch(final IOException e){
                 e.printStackTrace();
             }
         }
 
-        for(final Piece takenPiece: blackTakenPieces){
+        for(final Piece takenPiece: board.getRemovedBlackPieces()){
             try{
                 final BufferedImage image = ImageIO.read(new File("src/resources/" + takenPiece.toString() + ".png"));
                 final ImageIcon icon = new ImageIcon(image);
                 final JLabel imageLabel = new JLabel(new ImageIcon(icon.getImage().getScaledInstance(
-                        icon.getIconWidth() - 30, icon.getIconHeight() - 30, Image.SCALE_SMOOTH)));
+                        icon.getIconWidth() - 40, icon.getIconHeight() - 40, Image.SCALE_SMOOTH)));
                 this.upPanel.add(imageLabel);
             } catch(final IOException e){
                 e.printStackTrace();
             }
         }
+        downPanel.repaint();
+        upPanel.repaint();
         validate();
     }
 

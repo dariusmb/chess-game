@@ -11,7 +11,7 @@ public class Player {
 
     private Color color;
     private String name;
-    private ArrayList<Piece> pieces;
+    private ArrayList<Tile> piecesPositions;
     private Tile kingTile;
 
     public Player(){
@@ -21,7 +21,7 @@ public class Player {
     public Player(Color color, String name){
         this.color = color;
         this.name = name;
-        this.pieces = new ArrayList<>();
+        this.piecesPositions = new ArrayList<>();
     }
 
     public Color getColor() {
@@ -32,12 +32,24 @@ public class Player {
         return name;
     }
 
-    public void setPieces(ArrayList<Piece> pieces) {
-        this.pieces = pieces;
+    public void setPiecesPositions(ArrayList<Tile> pieces) {
+        this.piecesPositions = piecesPositions;
     }
 
-    public ArrayList<Piece> getPieces() {
-        return pieces;
+    public void addPiecePosition(Tile tile){
+        this.piecesPositions.add(tile);
+    }
+
+    public void removePiecePosition(Tile tile) {
+        this.piecesPositions.remove(tile);
+    }
+
+    public void changePiecePosition(Tile fromTile, Tile toTile) {
+        this.piecesPositions.remove(fromTile);
+        this.piecesPositions.add(toTile);
+    }
+    public ArrayList<Tile> getPiecesPositions() {
+        return piecesPositions;
     }
 
     public Tile getKingTile() {
@@ -53,7 +65,7 @@ public class Player {
         return "Player{" +
                 "color=" + color +
                 ", name='" + name + '\'' +
-                ", pieces=" + pieces +
+                ", piecesPositions=" + piecesPositions +
                 ", kingTile=" + kingTile +
                 '}';
     }

@@ -1,12 +1,10 @@
 package gui;
 
 import game.*;
-import javafx.scene.layout.TilePane;
 import pieces.Piece;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -17,7 +15,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-import static java.awt.Color.BLACK;
 import static javax.swing.SwingUtilities.invokeLater;
 import static javax.swing.SwingUtilities.isLeftMouseButton;
 import static javax.swing.SwingUtilities.isRightMouseButton;
@@ -27,7 +24,6 @@ import static javax.swing.SwingUtilities.isRightMouseButton;
  */
 public class Table extends Observable{
 
-    private final JFrame gameFrame;
     private final TakenPiecesPanel takenPiecesPanel;
     private final BoardPanel boardPanel;
     private final Board chessBoard;
@@ -38,25 +34,25 @@ public class Table extends Observable{
     private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(800, 800);
     private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(600, 600);
     private final static Dimension TILE_PANEL_DIMENSION = new Dimension(10, 10);
-    private static String pieceIconPath = "src/resources/";
     private Color lightTileColor = Color.decode("#FFFFFF");
     private Color darkTileColor = Color.decode("#000000");
 
     public Table(){
-        this.gameFrame = new JFrame("Chess");
-        this.gameFrame.setLayout(new BorderLayout());
-        this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
+        JFrame gameFrame = new JFrame("Chess");
+        gameFrame.setLayout(new BorderLayout());
+        gameFrame.setSize(OUTER_FRAME_DIMENSION);
         this.chessBoard = new Board();
         chessBoard.initializeBoard();
         this.takenPiecesPanel = new TakenPiecesPanel();
         this.boardPanel = new BoardPanel();
         this.addObserver(new ChessCheck());
-        this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
-        this.gameFrame.add(this.takenPiecesPanel, BorderLayout.EAST);
-        this.gameFrame.setVisible(true);
-        this.gameFrame.setResizable(false);
-        this.gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        gameFrame.add(this.boardPanel, BorderLayout.CENTER);
+        gameFrame.add(this.takenPiecesPanel, BorderLayout.EAST);
+        gameFrame.setVisible(true);
+        gameFrame.setResizable(false);
+        gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
+
 
     private class BoardPanel extends JPanel {
         final List<TilePanel> boardTiles;
@@ -75,7 +71,7 @@ public class Table extends Observable{
             validate();
         }
 
-        public void drawBoard(final Board board){
+        private void drawBoard(final Board board){
             removeAll();
             for(final TilePanel tilePanel: boardTiles){
                 tilePanel.drawTile(board);
@@ -97,16 +93,23 @@ public class Table extends Observable{
                         JOptionPane.INFORMATION_MESSAGE);
             }
 
+            if (chessBoard.isStaleMate()) {
+                JOptionPane.showMessageDialog(boardPanel,
+                        "Game Over: Player " + chessBoard.getCurrentPlayer().getColor() + " is in staleMate!", "Draw",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+
             if (chessBoard.isCheck()) {
                 TilePanel tilePanel = getTilePanel(boardPanel, chessBoard.getCurrentPlayer().getKingTile().getX(),
                         chessBoard.getCurrentPlayer().getKingTile().getY());
+                if (tilePanel != null) {
                     tilePanel.setBackground(Color.red);
-
+                }
             }
         }
     }
 
-    public TilePanel getTilePanel(final BoardPanel boardPanel, final int tileRow, final int tileCol){
+    private TilePanel getTilePanel(final BoardPanel boardPanel, final int tileRow, final int tileCol){
         for(final TilePanel tilePanel: boardPanel.boardTiles){
             if(tilePanel.tileRow == tileRow && tilePanel.tileCol == tileCol){
                 return tilePanel;
@@ -127,7 +130,7 @@ public class Table extends Observable{
             setPreferredSize(TILE_PANEL_DIMENSION);
             assignTileColor(tileRow, tileCol);
             assignTilePieceIcon(chessBoard);
-            highlightTile(chessBoard);
+            highlightTile();
             addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(final MouseEvent e) {
@@ -197,7 +200,7 @@ public class Table extends Observable{
 
 
 
-        private void highlightTile(final Board board){
+        private void highlightTile(){
             if(movedPiece != null && movedPiece.getColor() == chessBoard.getCurrentPlayer().getColor()
                     && movedPiece == chessBoard.getTile(tileRow, tileCol).getPiece()){
                 setBorder(BorderFactory.createLineBorder(Color.green, 2));
@@ -206,10 +209,10 @@ public class Table extends Observable{
             }
         }
 
-        public void drawTile(final Board board){
+        private void drawTile(final Board board){
             assignTileColor(this.tileRow, this.tileCol);
             assignTilePieceIcon(board);
-            highlightTile(chessBoard);
+            highlightTile();
             validate();
             repaint();
         }
@@ -218,6 +221,7 @@ public class Table extends Observable{
             this.removeAll();
             if(board.getTile(this.tileRow, this.tileCol).getPiece() != null) {
                 try {
+                    String pieceIconPath = "src/resources/";
                     final BufferedImage image = ImageIO.read(new File(pieceIconPath + board.getTile(this.tileRow, this.tileCol).getPiece() + ".png"));
                     add(new JLabel(new ImageIcon(image)));
                 } catch(IOException e){
