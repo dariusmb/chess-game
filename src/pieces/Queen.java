@@ -5,6 +5,8 @@ import game.Color;
 import game.Player;
 import game.Tile;
 
+import java.util.ArrayList;
+
 import static java.lang.StrictMath.abs;
 
 /**
@@ -12,14 +14,13 @@ import static java.lang.StrictMath.abs;
  */
 public class Queen extends Piece{
 
-    public Queen(Color color){
-        super(color, true);
+    public Queen(Color color, int x, int y){
+        super(color, x, y);
     }
 
     @Override
     public boolean isMoveValid(Tile fromTile, Tile toTile) {
         super.isMoveValid(fromTile, toTile);
-
         int fromX = fromTile.getX();
         int fromY = fromTile.getY();
 
@@ -32,5 +33,22 @@ public class Queen extends Piece{
     @Override
     public String toString() {
         return "Q" + (this.getColor() == Color.BLACK ? "B" : "W");
+    }
+
+    @Override
+    public ArrayList<Tile> calculatePossibleMoves(Board board) {
+
+        this.getPossibleMoves().clear();
+
+        Piece[] pieces = {
+                new Rook(this.getColor(), this.getX(), this.getY()),
+                new Bishop(this.getColor(), this.getX(), this.getY())
+        };
+        for(Piece piece: pieces){
+            this.getPossibleMoves().addAll(piece.calculatePossibleMoves(board));
+        }
+
+        System.out.println(this.getPossibleMoves());
+        return this.getPossibleMoves();
     }
 }

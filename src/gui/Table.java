@@ -87,6 +87,7 @@ public class Table extends Observable{
         @Override
         public void update(Observable o, Object arg) {
 
+
             if (chessBoard.isCheckMate()) {
                 JOptionPane.showMessageDialog(boardPanel,
                         "Game Over: Player " + chessBoard.getCurrentPlayer().getColor() + " is in checkmate!", "Game Over",
@@ -100,8 +101,8 @@ public class Table extends Observable{
             }
 
             if (chessBoard.isCheck()) {
-                TilePanel tilePanel = getTilePanel(boardPanel, chessBoard.getCurrentPlayer().getKingTile().getX(),
-                        chessBoard.getCurrentPlayer().getKingTile().getY());
+                TilePanel tilePanel = getTilePanel(boardPanel, chessBoard.getCurrentPlayer().getKing().getX(),
+                        chessBoard.getCurrentPlayer().getKing().getY());
                 if (tilePanel != null) {
                     tilePanel.setBackground(Color.red);
                 }
@@ -130,7 +131,6 @@ public class Table extends Observable{
             setPreferredSize(TILE_PANEL_DIMENSION);
             assignTileColor(tileRow, tileCol);
             assignTilePieceIcon(chessBoard);
-            highlightTile();
             addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(final MouseEvent e) {
@@ -157,7 +157,6 @@ public class Table extends Observable{
                             toTile = chessBoard.getTile(tileRow, tileCol);
                             if(chessBoard.getCurrentPlayer().getColor() == fromTile.getPiece().getColor()){
                                 chessBoard.move(chessBoard.getCurrentPlayer(), fromTile, toTile);
-
                                 fromTile = null;
                                 toTile = null;
                                 movedPiece = null;
@@ -168,6 +167,7 @@ public class Table extends Observable{
                             public void run() {
                                 takenPiecesPanel.redo(chessBoard);
                                 boardPanel.drawBoard(chessBoard);
+                                highlightTile();
                                 setChanged();
                                 notifyObservers();
                             }
@@ -204,6 +204,15 @@ public class Table extends Observable{
             if(movedPiece != null && movedPiece.getColor() == chessBoard.getCurrentPlayer().getColor()
                     && movedPiece == chessBoard.getTile(tileRow, tileCol).getPiece()){
                 setBorder(BorderFactory.createLineBorder(Color.green, 2));
+//                for(Tile tile: movedPiece.calculatePossibleMoves(chessBoard)){
+//                    TilePanel tilePanel = getTilePanel(boardPanel, tile.getX(),
+//                            tile.getY());
+//                    if (tile.getPiece() != null){
+//                        tilePanel.setBackground(Color.red);
+//                    } else {
+//                        tilePanel.setBackground(Color.green);
+//                    }
+//                }
             } else {
                 setBorder(BorderFactory.createLineBorder(Color.gray));
             }

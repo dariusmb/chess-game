@@ -1,5 +1,6 @@
 package game;
 
+import pieces.King;
 import pieces.Piece;
 
 import java.util.ArrayList;
@@ -11,8 +12,8 @@ public class Player {
 
     private Color color;
     private String name;
-    private ArrayList<Tile> piecesPositions;
-    private Tile kingTile;
+    private ArrayList<Piece> pieces;
+    private King king;
 
     public Player(){
        this(null, null);
@@ -21,7 +22,7 @@ public class Player {
     public Player(Color color, String name){
         this.color = color;
         this.name = name;
-        this.piecesPositions = new ArrayList<>();
+        this.pieces = new ArrayList<>();
     }
 
     public Color getColor() {
@@ -32,32 +33,37 @@ public class Player {
         return name;
     }
 
-    public void setPiecesPositions(ArrayList<Tile> pieces) {
-        this.piecesPositions = piecesPositions;
+    public void setPieces(ArrayList<Piece> pieces) {
+        this.pieces = pieces;
     }
 
-    public void addPiecePosition(Tile tile){
-        this.piecesPositions.add(tile);
+    public void addPiece(Piece piece){
+        this.pieces.add(piece);
     }
 
-    public void removePiecePosition(Tile tile) {
-        this.piecesPositions.remove(tile);
+    public void removePiece(Piece piece) {
+        this.pieces.remove(piece);
     }
 
-    public void changePiecePosition(Tile fromTile, Tile toTile) {
-        this.piecesPositions.remove(fromTile);
-        this.piecesPositions.add(toTile);
-    }
-    public ArrayList<Tile> getPiecesPositions() {
-        return piecesPositions;
-    }
-
-    public Tile getKingTile() {
-        return kingTile;
+//    public void changePiecePosition(Tile fromTile, Tile toTile) {
+//        this.pieces.remove(fromTile);
+//        this.pieces.add(toTile);
+//    }
+    public ArrayList<Piece> getPieces() {
+        return pieces;
     }
 
-    public void setKingTile(Tile kingTile) {
-        this.kingTile = kingTile;
+    public King getKing() {
+        return king;
+    }
+
+    public void setKing(King king) {
+        this.king = king;
+    }
+
+    public void setKingCoordinates(int x, int y) {
+        king.setX(x);
+        king.setY(y);
     }
 
     @Override
@@ -65,8 +71,8 @@ public class Player {
         return "Player{" +
                 "color=" + color +
                 ", name='" + name + '\'' +
-                ", piecesPositions=" + piecesPositions +
-                ", kingTile=" + kingTile +
+                ", pieces=" + pieces +
+                ", kingTile=" + king +
                 '}';
     }
 }

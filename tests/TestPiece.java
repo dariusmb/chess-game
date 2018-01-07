@@ -17,7 +17,7 @@ public class TestPiece {
 
     @Test
     public void testBlackPawn(){
-        Pawn pawn = new Pawn(Color.BLACK);
+        Pawn pawn = new Pawn(Color.BLACK, 1, 0);
         Tile fromTile = new Tile(1, 0);
         Tile toTile = new Tile(3, 0);
         assertTrue(pawn.isMoveValid(fromTile, toTile), "Can move 2 spaces if firstMove");
@@ -37,7 +37,7 @@ public class TestPiece {
 
     @Test
     public void testWhitePawn(){
-        Pawn pawn = new Pawn(Color.WHITE);
+        Pawn pawn = new Pawn(Color.WHITE, 3, 0);
         Tile fromTile = new Tile(3, 0);
         Tile toTile = new Tile(1, 0);
         assertTrue(pawn.isMoveValid(fromTile, toTile), "Can move 2 spaces if firstMove");
@@ -57,7 +57,7 @@ public class TestPiece {
 
     @Test
     public void testKnight(){
-        Knight knight = new Knight(Color.BLACK);
+        Knight knight = new Knight(Color.BLACK, 4, 4);
         Tile fromTile = new Tile(4,4);
         Tile toTile = new Tile(5,2);
         assertTrue(knight.isMoveValid(fromTile, toTile), "Valid move");
@@ -81,7 +81,7 @@ public class TestPiece {
 
     @Test
     public void testBishop(){
-        Bishop bishop = new Bishop(Color.BLACK);
+        Bishop bishop = new Bishop(Color.BLACK, 0, 1);
         Tile fromTile = new Tile(0, 1);
         Tile toTile = new Tile(2,3);
 

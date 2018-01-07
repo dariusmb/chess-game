@@ -5,23 +5,26 @@ import game.Color;
 import game.Player;
 import game.Tile;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * Created by Bogdan Darius on 12/10/2017.
  */
 public abstract class Piece {
 //TODO remove isfirstmove from other pieces
     private Color color;
-    private boolean isAlive;
     private boolean isFirstMove;
+    private int x;
+    private int y;
+    private ArrayList<Tile> possibleMoves;
 
-    public Piece(Color color, boolean isAlive){
+    public Piece(Color color, int x, int y){
         this.color = color;
-        this.isAlive = isAlive;
         this.isFirstMove = true;
-    }
-
-    public void setAlive(boolean alive) {
-        isAlive = alive;
+        this.x = x;
+        this.y = y;
+        this.possibleMoves = new ArrayList<>();
     }
 
     public boolean isFirstMove() {
@@ -36,11 +39,30 @@ public abstract class Piece {
         return color;
     }
 
-    public boolean isAlive() {
-        return isAlive;
+
+    public int getX() {
+        return x;
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
 
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public ArrayList<Tile> getPossibleMoves() {
+        return possibleMoves;
+    }
+
+    public void addPossibleMove(Tile tile) {
+        this.possibleMoves.add(tile);
+    }
     public boolean isMoveValid(Tile fromTile, Tile toTile) {
 
         //same coordinates
@@ -55,6 +77,17 @@ public abstract class Piece {
         return true;
     }
 
-//    public abstract void move(Board board, Player player, int toX, int toY);
+    @Override
+    public String toString() {
+        return "Piece{" +
+                "color=" + color +
+                ", isFirstMove=" + isFirstMove +
+                ", x=" + x +
+                ", y=" + y +
+                '}';
+    }
+
+    public abstract ArrayList<Tile> calculatePossibleMoves(Board board);
+    //    public abstract void move(Board board, Player player, int toX, int toY);
 
 }
