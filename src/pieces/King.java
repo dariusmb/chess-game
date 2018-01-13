@@ -53,7 +53,7 @@ public class King extends Piece{
             if(row >= 0 && row < 8 && col >= 0 && col < 8) {
                 Tile tile = board.getTile(row, col);
 
-                if (!board.isThreatenTile(color, tile, false, true) && (tile.getPiece() == null || tile.getPiece().getColor() != color)) {
+                if (!board.isThreatenTile(color, tile, true) && (tile.getPiece() == null || tile.getPiece().getColor() != color)) {
                     this.addPossibleMove(tile);
                 }
             }

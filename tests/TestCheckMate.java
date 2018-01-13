@@ -24,7 +24,7 @@ public class TestCheckMate {
         assertTrue(board.move(board.getCurrentPlayer(), board.getTile(6, 5), board.getTile(5, 5)));
         assertTrue(board.move(board.getCurrentPlayer(), board.getTile(1, 4), board.getTile(3, 4)));
         assertTrue(board.move(board.getCurrentPlayer(), board.getTile(6, 6), board.getTile(4, 6)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(0, 3), board.getTile(4, 7)));
+        board.move(board.getCurrentPlayer(), board.getTile(0, 3), board.getTile(4, 7));
         assertTrue(board.isCheckMate());
     }
 

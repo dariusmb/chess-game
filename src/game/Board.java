@@ -39,10 +39,6 @@ public class Board {
         lastMove = null;
     }
 
-    public ArrayList<Tile> getTiles() {
-        return tiles;
-    }
-
     public ArrayList<Piece> getRemovedWhitePieces() {
         return removedWhitePieces;
     }
@@ -134,15 +130,6 @@ public class Board {
         player.addPiece(queen);
         player.addPiece(king);
         player.setKing(king);
-    }
-
-    public void showPieces(){
-        for(int i = 0; i < 8; i++){
-            for(int j = 0; j < 8; j++){
-                System.out.print(this.getTile(i, j).getPiece() != null ? this.getTile(i, j).getPiece() : "ET ");
-            }
-            System.out.println();
-        }
     }
 
     private boolean checkIfClearWayDiagonal(Tile fromTile, Tile toTile){
@@ -253,7 +240,7 @@ public class Board {
         if((movedPiece instanceof Pawn && movePawn(player, fromTile, toTile))){
             moveMade = validateMove(player, fromTile, toTile);
         } else if (movedPiece instanceof King && movedPiece.isMoveValid(fromTile, toTile) &&
-                !isThreatenTile(player.getColor(), toTile, false, true)){
+                !isThreatenTile(player.getColor(), toTile, true)){
             moveMade = validateMove(player, fromTile, toTile);
         } else if(movedPiece instanceof King && (fromTile.getY() - 3 == toTile.getY() || fromTile.getY() + 2 == toTile.getY())
                 && fromTile.getX() == toTile.getX()) {
@@ -264,7 +251,7 @@ public class Board {
         }
 
         Tile kingTile = getTile(currentPlayer.getKing().getX(), currentPlayer.getKing().getY());
-        if(isThreatenTile(currentPlayer.getColor(), kingTile, false, true)){
+        if(isThreatenTile(currentPlayer.getColor(), kingTile, true)){
             this.isCheck = true;
             if(checkIfCheckMate(kingTile)){
                 this.isCheckMate = true;
@@ -283,7 +270,6 @@ public class Board {
     }
 
     //Make the move on the board
-
     /**
      * Moves the piece fromTile to toTile on the board
      * @param player the player who wants to move
@@ -339,7 +325,7 @@ public class Board {
         }
         Tile kingTile = getTile(player.getKing().getX(), player.getKing().getY());
         fromTile.setPiece(null);
-        if(!isThreatenTile(player.getColor(), kingTile, false, true)){
+        if(!isThreatenTile(player.getColor(), kingTile, true)){
             //the move made the check disappear so it's a valid move
             fromTile.setPiece(toTile.getPiece());
             toTile.setPiece(tile.getPiece());
@@ -418,11 +404,10 @@ public class Board {
      * Checks if the tile is threa
      * @param threatenedColor the color that is threatened
      * @param threatenedTile the Tile you want to see if it is threatened
-     * @param inCheck true if you are in check and false otherwise
      * @param canPawnAttack
      * @return
      */
-    public boolean isThreatenTile(Color threatenedColor, Tile threatenedTile, boolean inCheck, boolean canPawnAttack){
+    public boolean isThreatenTile(Color threatenedColor, Tile threatenedTile, boolean canPawnAttack){
 
         int rowDirections[] = {-1, -1, -1, 0, 0, 1, 1, 1};
         int colDirections[] = {-1, 0, 1, -1, 1, -1, 0, 1};
@@ -487,7 +472,7 @@ public class Board {
                                         }
                                         threatDetected = true;
                                     }
-                                    if(piece instanceof  King && kingThreats[direction] && !inCheck)
+                                    if(piece instanceof  King && kingThreats[direction])
                                         threatDetected = true;
                                 }
                             }
@@ -555,7 +540,7 @@ public class Board {
         if (fromTile.getPiece().isFirstMove() && rookTile.getPiece().isFirstMove()
                 && checkIfClearWayOnLine(fromTile, rookTile ) && !isCheck) {
             for (int i = fromTile.getY() + colOffset; i != rookTile.getY(); i += colOffset) {
-                if (isThreatenTile(fromTile.getPiece().getColor(), getTile(toTile.getX(), i), false, true)) {
+                if (isThreatenTile(fromTile.getPiece().getColor(), getTile(toTile.getX(), i), true)) {
                     return false;
                 }
             }
@@ -583,7 +568,9 @@ public class Board {
         } else {
             contenderColor = Color.BLACK;
         }
-        if(contenderPieceTile != null && !isThreatenTile(contenderColor, contenderPieceTile, true, true)){
+        King king = currentPlayer.getKing();
+        kingTile.setPiece(null);
+        if(contenderPieceTile != null && !isThreatenTile(contenderColor, contenderPieceTile, true)){
             canInterceptPiece = false;
             if(!(contenderPieceTile.getPiece() instanceof  Knight)){
                 if(!checkIfNoThreat(contenderColor, contenderPieceTile, kingTile)){
@@ -591,7 +578,7 @@ public class Board {
                 }
             }
         }
-
+        kingTile.setPiece(king);
 
         if(kingTile.getPiece().calculatePossibleMoves(this).size() == 0 && !canInterceptPiece){
             //check mate
@@ -628,7 +615,7 @@ public class Board {
         int j = fromTile.getY() + columnOffset;
         for(int i = fromTile.getX() + rowOffset; i != toTile.getX(); i += rowOffset){
 
-            if(isThreatenTile(contenderColor, getTile(i,j), true, false)){
+            if(isThreatenTile(contenderColor, getTile(i,j), false)){
                 return false;
             }
             j += columnOffset;
@@ -656,7 +643,7 @@ public class Board {
                 rowOffset = 1;
             }
             for(int i = fromTile.getX() + rowOffset;  i != toTile.getX(); i+= rowOffset){
-                if(isThreatenTile(contenderColor, getTile(i, toTile.getY()), true, false)){
+                if(isThreatenTile(contenderColor, getTile(i, toTile.getY()), false)){
                     return false;
                 }
             }
@@ -667,7 +654,7 @@ public class Board {
                 columnOffset = 1;
             }
             for (int i = fromTile.getY() + columnOffset; i != toTile.getY(); i+= columnOffset) {
-                if (isThreatenTile(contenderColor, getTile(toTile.getX(), i), true, false)) {
+                if (isThreatenTile(contenderColor, getTile(toTile.getX(), i), false)) {
                     return false;
                 }
             }
@@ -720,11 +707,4 @@ public class Board {
         return isStaleMate;
     }
 
-    public Tile getLastMove() {
-        return lastMove;
-    }
-
-    public void setLastMove(Tile lastMove) {
-        this.lastMove = lastMove;
-    }
 }
