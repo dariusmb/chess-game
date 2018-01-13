@@ -141,7 +141,6 @@ public class Table extends Observable{
                         movedPiece = null;
                     } else if(isLeftMouseButton(e)) {
                         //first click on a tile
-                        System.out.println(fromTile + " " + toTile);
                         if(fromTile == null){
                             if(chessBoard.getTile(tileRow, tileCol).getPiece() != null &&
                                     chessBoard.getTile(tileRow, tileCol).getPiece().getColor() == chessBoard.getCurrentPlayer().getColor()){
@@ -213,6 +212,7 @@ public class Table extends Observable{
 //                        tilePanel.setBackground(Color.green);
 //                    }
 //                }
+
             } else {
                 setBorder(BorderFactory.createLineBorder(Color.gray));
             }

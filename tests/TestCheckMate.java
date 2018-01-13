@@ -50,7 +50,7 @@ public class TestCheckMate {
         board.initializeBoard();
         assertTrue(board.move(board.getCurrentPlayer(), board.getTile(6, 4), board.getTile(4, 4)));
         assertTrue(board.move(board.getCurrentPlayer(), board.getTile(1, 4), board.getTile(3, 4)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(7, 6), board.getTile(5, 5)));
+        board.move(board.getCurrentPlayer(), board.getTile(7, 6), board.getTile(5, 5));
         assertTrue(board.move(board.getCurrentPlayer(), board.getTile(0, 1), board.getTile(2, 2)));
         assertTrue(board.move(board.getCurrentPlayer(), board.getTile(7, 5), board.getTile(4, 2)));
         assertTrue(board.move(board.getCurrentPlayer(), board.getTile(1, 3), board.getTile(2, 3)));

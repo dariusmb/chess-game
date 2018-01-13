@@ -2,7 +2,6 @@ package pieces;
 
 import game.Board;
 import game.Color;
-import game.Player;
 import game.Tile;
 
 import java.util.ArrayList;
@@ -47,8 +46,6 @@ public class Queen extends Piece{
         for(Piece piece: pieces){
             this.getPossibleMoves().addAll(piece.calculatePossibleMoves(board));
         }
-
-        System.out.println(this.getPossibleMoves());
         return this.getPossibleMoves();
     }
 }

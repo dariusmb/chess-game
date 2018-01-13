@@ -87,7 +87,6 @@ public class Rook extends Piece{
             }
         }
 
-        System.out.println(this.getPossibleMoves());
         return this.getPossibleMoves();
     }
 }

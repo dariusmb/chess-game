@@ -2,17 +2,14 @@ package pieces;
 
 import game.Board;
 import game.Color;
-import game.Player;
 import game.Tile;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
  * Created by Bogdan Darius on 12/10/2017.
  */
 public abstract class Piece {
-//TODO remove isfirstmove from other pieces
     private Color color;
     private boolean isFirstMove;
     private int x;
@@ -88,6 +85,4 @@ public abstract class Piece {
     }
 
     public abstract ArrayList<Tile> calculatePossibleMoves(Board board);
-    //    public abstract void move(Board board, Player player, int toX, int toY);
-
 }

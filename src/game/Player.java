@@ -15,10 +15,6 @@ public class Player {
     private ArrayList<Piece> pieces;
     private King king;
 
-    public Player(){
-       this(null, null);
-    }
-
     public Player(Color color, String name){
         this.color = color;
         this.name = name;
@@ -45,10 +41,6 @@ public class Player {
         this.pieces.remove(piece);
     }
 
-//    public void changePiecePosition(Tile fromTile, Tile toTile) {
-//        this.pieces.remove(fromTile);
-//        this.pieces.add(toTile);
-//    }
     public ArrayList<Piece> getPieces() {
         return pieces;
     }
