@@ -13,6 +13,8 @@ https://en.wikipedia.org/wiki/Chess#Rules
  
 ## Use cases
 
+<<<<<<< HEAD
+=======
 To make the castling, the user must select the king first. \
 If a pawn reaches the end of the board, his promotion is automatically made to queen.
 
@@ -66,3 +68,4 @@ I included in the tests directory some unit tests for checkmate, stalemate, piec
 1. Make a Move class with 2 attributes, fromTile and toTile and make in board an arraylist of moves to keep the move history, this way I wouldn't need the lastMove attribute anymore.
 2. Highlight on the board all possible moves a piece can make
 3. Allow the player to choose in what to transform the pawn when it reaches the end of the board instead of promoting it into a queen automatically.
+>>>>>>> dbcd19e691962006b070f5b89519884c8ff1e9ec
