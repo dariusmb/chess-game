@@ -10,21 +10,15 @@ import java.util.ArrayList;
 public class Board {
 
     private ArrayList<Tile> tiles;
-    private ArrayList<Piece> removedWhitePieces;
-    private ArrayList<Piece> removedBlackPieces;
-    private Tile contenderPieceTile;
+    private ArrayList<Piece> removedPieces;
     private Tile lastMove;
     private Player blackPlayer;
     private Player whitePlayer;
     private Player currentPlayer;
-    private boolean isCheck;
-    private boolean isStaleMate;
-    private boolean isCheckMate;
+    private State state;
 
     public Board(){
-        this.isCheck = false;
-        this.isCheckMate = false;
-        this.isStaleMate = false;
+        this.state = State.NORMAL;
         blackPlayer = new Player(Color.BLACK, "Darius");
         whitePlayer = new Player(Color.WHITE, "Alex");
         currentPlayer = whitePlayer;
@@ -34,18 +28,11 @@ public class Board {
                 tiles.add(new Tile(i, j));
             }
         }
-        removedWhitePieces = new ArrayList<>();
-        removedBlackPieces = new ArrayList<>();
+        removedPieces = new ArrayList<>();
         lastMove = null;
     }
 
-    public ArrayList<Piece> getRemovedWhitePieces() {
-        return removedWhitePieces;
-    }
 
-    public ArrayList<Piece> getRemovedBlackPieces() {
-        return removedBlackPieces;
-    }
 
     public Tile getTile(int x, int y){
 
@@ -252,19 +239,20 @@ public class Board {
 
         Tile kingTile = getTile(currentPlayer.getKing().getX(), currentPlayer.getKing().getY());
         if(isThreatenTile(currentPlayer.getColor(), kingTile, true)){
-            this.isCheck = true;
+            this.state = State.CHECK;
             if(checkIfCheckMate(kingTile)){
-                this.isCheckMate = true;
+                this.state = State.CHECKMATE;
             }
         } else if(kingTile.getPiece().calculatePossibleMoves(this).size() == 0){
-            this.isStaleMate = true;
+            this.state = State.STALEMATE;
             for(Piece piece: currentPlayer.getPieces()){
                 if(piece.calculatePossibleMoves(this).size() != 0){
-                    this.isStaleMate = false;
+                    this.state = State.NORMAL;
+
                 }
             }
         } else {
-            this.isCheck = false;
+            this.state = State.NORMAL;
         }
         return moveMade;
     }
@@ -326,13 +314,12 @@ public class Board {
         Tile kingTile = getTile(player.getKing().getX(), player.getKing().getY());
         fromTile.setPiece(null);
         if(!isThreatenTile(player.getColor(), kingTile, true)){
-            //the move made the check disappear so it's a valid move
             fromTile.setPiece(toTile.getPiece());
             toTile.setPiece(tile.getPiece());
             makeMove(player, fromTile, toTile);
             moveMade = true;
         } else {
-            //not a valid move, still in check, so move the pieces back
+            //not a valid move, can't move a piece if it leaves you in check, move the pieces back
             fromTile.setPiece(toTile.getPiece());
             toTile.setPiece(tile.getPiece());
             if (fromTile.getPiece() instanceof King) {
@@ -392,22 +379,21 @@ public class Board {
 
         Piece piece = tile.getPiece();
         if(tile.getPiece().getColor() == Color.BLACK){
-            removedBlackPieces.add(piece);
             blackPlayer.removePiece(piece);
         } else {
-            removedWhitePieces.add(piece);
             whitePlayer.removePiece(piece);
         }
+        removedPieces.add(piece);
     }
 
     /**
-     * Checks if the tile is threa
+     * Checks if the tile is threatened
      * @param threatenedColor the color that is threatened
      * @param threatenedTile the Tile you want to see if it is threatened
-     * @param canPawnAttack
+     * @param canPawnAttack if the pawn can attack
      * @return
      */
-    public boolean isThreatenTile(Color threatenedColor, Tile threatenedTile, boolean canPawnAttack){
+        public boolean isThreatenTile(Color threatenedColor, Tile threatenedTile, boolean canPawnAttack){
 
         int rowDirections[] = {-1, -1, -1, 0, 0, 1, 1, 1};
         int colDirections[] = {-1, 0, 1, -1, 1, -1, 0, 1};
@@ -450,26 +436,14 @@ public class Board {
                         if (!(piece.getColor() == threatenedColor)){
                             //opponents piece, must check if the piece can attack us
                             if (piece instanceof Bishop && bishopThreats[direction]){
-                                if(threatenedTile.getPiece() instanceof King){
-                                    contenderPieceTile = tile;
-                                }
                                 threatDetected = true;
                             } else if (piece instanceof Rook && rookThreats[direction]){
-                                if(threatenedTile.getPiece() instanceof King){
-                                    contenderPieceTile = tile;
-                                }
                                 threatDetected = true;
                             } else if (piece instanceof Queen && queenThreats[direction]){
-                                if(threatenedTile.getPiece() instanceof King){
-                                    contenderPieceTile = tile;
-                                }
                                 threatDetected = true;
                             } else {
                                 if(step == 0){
                                     if (piece instanceof Pawn && pawnThreats[direction] && canPawnAttack) {
-                                        if(threatenedTile.getPiece() instanceof King){
-                                            contenderPieceTile = tile;
-                                        }
                                         threatDetected = true;
                                     }
                                     if(piece instanceof  King && kingThreats[direction])
@@ -477,7 +451,7 @@ public class Board {
                                 }
                             }
                         }
-                        if(!(piece instanceof King && isCheck)){
+                        if(!(piece instanceof King && state == State.CHECK)){
                             break;
                         }
                     }
@@ -538,7 +512,7 @@ public class Board {
         }
 
         if (fromTile.getPiece().isFirstMove() && rookTile.getPiece().isFirstMove()
-                && checkIfClearWayOnLine(fromTile, rookTile ) && !isCheck) {
+                && checkIfClearWayOnLine(fromTile, rookTile ) && !(state == State.CHECK)) {
             for (int i = fromTile.getY() + colOffset; i != rookTile.getY(); i += colOffset) {
                 if (isThreatenTile(fromTile.getPiece().getColor(), getTile(toTile.getX(), i), true)) {
                     return false;
@@ -560,20 +534,14 @@ public class Board {
     private boolean checkIfCheckMate(Tile kingTile){
 
         boolean canInterceptPiece = true;
-        Color color = kingTile.getPiece().getColor();
-        Color contenderColor;
+        Color contenderColor = lastMove.getPiece().getColor();
 
-        if(color == Color.BLACK){
-            contenderColor = Color.WHITE;
-        } else {
-            contenderColor = Color.BLACK;
-        }
         King king = currentPlayer.getKing();
         kingTile.setPiece(null);
-        if(contenderPieceTile != null && !isThreatenTile(contenderColor, contenderPieceTile, true)){
+        if(lastMove != null && !isThreatenTile(contenderColor, lastMove, true)){
             canInterceptPiece = false;
-            if(!(contenderPieceTile.getPiece() instanceof  Knight)){
-                if(!checkIfNoThreat(contenderColor, contenderPieceTile, kingTile)){
+            if(!(lastMove.getPiece() instanceof  Knight)){
+                if(!checkIfNoThreat(contenderColor, lastMove, kingTile)){
                     canInterceptPiece = true;
                 }
             }
@@ -679,9 +647,6 @@ public class Board {
             return checkIfNoThreatOnDiagonal(contenderColor, fromTile, toTile);
         }
     }
-    public boolean isCheck() {
-        return isCheck;
-    }
 
     public Player getCurrentPlayer() {
         return currentPlayer;
@@ -699,12 +664,10 @@ public class Board {
         this.currentPlayer = currentPlayer;
     }
 
-    public boolean isCheckMate() {
-        return isCheckMate;
+    public State getState() {
+        return state;
     }
-
-    public boolean isStaleMate() {
-        return isStaleMate;
+    public ArrayList<Piece> getRemovedPieces() {
+        return removedPieces;
     }
-
 }

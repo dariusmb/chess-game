@@ -1,5 +1,6 @@
 import game.Board;
 import game.Color;
+import game.State;
 import org.junit.jupiter.api.Test;
 import pieces.*;
 
@@ -143,7 +144,7 @@ public class TestCastling {
         board.getWhitePlayer().setKing(whiteKing);
         board.setCurrentPlayer(board.getBlackPlayer());
         assertTrue(board.move(board.getCurrentPlayer(), board.getTile(4, 3), board.getTile(5, 2)));
-        assertTrue(board.isCheck());
+        assertTrue(board.getState() == State.CHECK);
         //Can't castle because a tile between the king and the rook is threatened by a Pawn
         assertFalse(board.move(board.getCurrentPlayer(), board.getTile(7, 4), board.getTile(7, 6)));
     }

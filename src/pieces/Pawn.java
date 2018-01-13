@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class Pawn extends Piece{
 
-    private boolean jumpOneSpace;
+    private boolean canJumpOneSpace;
 
     public Pawn(Color color, int x, int y){
         super(color, x, y);
@@ -35,21 +35,17 @@ public class Pawn extends Piece{
         }
 
         if(fromY  == toY && fromX + offset == toX){
-            this.jumpOneSpace = false;
+            this.canJumpOneSpace = false;
             return true;
         } else if(fromX + 2 * offset == toX  && super.isFirstMove() && fromY == toY){
-            this.jumpOneSpace = true;
+            this.canJumpOneSpace = true;
             return true;
         }
         return false;
     }
 
     public boolean isJumpOneSpace() {
-        return jumpOneSpace;
-    }
-
-    public void setJumpOneSpace(boolean jumpOneSpace) {
-        this.jumpOneSpace = jumpOneSpace;
+        return canJumpOneSpace;
     }
 
     @Override

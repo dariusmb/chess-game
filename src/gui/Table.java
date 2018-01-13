@@ -87,26 +87,26 @@ public class Table extends Observable{
         @Override
         public void update(Observable o, Object arg) {
 
-
-            if (chessBoard.isCheckMate()) {
-                JOptionPane.showMessageDialog(boardPanel,
-                        "Game Over: Player " + chessBoard.getCurrentPlayer().getColor() + " is in checkmate!", "Game Over",
-                        JOptionPane.INFORMATION_MESSAGE);
-            }
-
-            if (chessBoard.isStaleMate()) {
-                JOptionPane.showMessageDialog(boardPanel,
-                        "Game Over: Player " + chessBoard.getCurrentPlayer().getColor() + " is in staleMate!", "Draw",
-                        JOptionPane.INFORMATION_MESSAGE);
-            }
-
-            if (chessBoard.isCheck()) {
+            if (chessBoard.getState() == State.CHECK) {
                 TilePanel tilePanel = getTilePanel(boardPanel, chessBoard.getCurrentPlayer().getKing().getX(),
                         chessBoard.getCurrentPlayer().getKing().getY());
                 if (tilePanel != null) {
                     tilePanel.setBackground(Color.red);
                 }
             }
+
+            if (chessBoard.getState() == State.CHECKMATE) {
+                JOptionPane.showMessageDialog(boardPanel,
+                        "Game Over: Player " + chessBoard.getCurrentPlayer().getColor() + " is in checkmate!", "Game Over",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            if (chessBoard.getState() == State.STALEMATE) {
+                JOptionPane.showMessageDialog(boardPanel,
+                        "Game Over: Player " + chessBoard.getCurrentPlayer().getColor() + " is in staleMate!", "Draw",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+
         }
     }
 
@@ -125,11 +125,11 @@ public class Table extends Observable{
         private final int tileCol;
 
         TilePanel(final BoardPanel boardPanel, final int tileRow, final int tileCol){
-//            super(new GridBagLayout());
             this.tileRow = tileRow;
             this.tileCol = tileCol;
             setPreferredSize(TILE_PANEL_DIMENSION);
             assignTileColor(tileRow, tileCol);
+            highlightTile();
             assignTilePieceIcon(chessBoard);
             addMouseListener(new MouseListener() {
                 @Override
@@ -166,7 +166,7 @@ public class Table extends Observable{
                             public void run() {
                                 takenPiecesPanel.redo(chessBoard);
                                 boardPanel.drawBoard(chessBoard);
-                                highlightTile();
+//                                highlightTile();
                                 setChanged();
                                 notifyObservers();
                             }

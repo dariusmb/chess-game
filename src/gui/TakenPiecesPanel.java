@@ -44,16 +44,16 @@ class TakenPiecesPanel extends JPanel {
         final List<Piece> whiteTakenPieces = new ArrayList<>();
         final List<Piece> blackTakenPieces = new ArrayList<>();
 
-//        for(final Piece piece: board.getRemovedPieces()){
-//            if(piece.getColor() == game.Color.BLACK){
-//                blackTakenPieces.add(piece);
-//            } else if (piece.getColor() == game.Color.WHITE){
-//                whiteTakenPieces.add(piece);
-//            } else {
-//                throw new RuntimeException("should not reach here");
-//            }
-//        }
-        for(final Piece takenPiece: board.getRemovedWhitePieces()){
+        for(final Piece piece: board.getRemovedPieces()){
+            if(piece.getColor() == game.Color.BLACK){
+                blackTakenPieces.add(piece);
+            } else if (piece.getColor() == game.Color.WHITE){
+                whiteTakenPieces.add(piece);
+            } else {
+                throw new RuntimeException("should not reach here");
+            }
+        }
+        for(final Piece takenPiece: whiteTakenPieces){
             try{
                 final BufferedImage image = ImageIO.read(new File("src/resources/" + takenPiece.toString() + ".png"));
                 final ImageIcon icon = new ImageIcon(image);
@@ -65,7 +65,7 @@ class TakenPiecesPanel extends JPanel {
             }
         }
 
-        for(final Piece takenPiece: board.getRemovedBlackPieces()){
+        for(final Piece takenPiece: blackTakenPieces){
             try{
                 final BufferedImage image = ImageIO.read(new File("src/resources/" + takenPiece.toString() + ".png"));
                 final ImageIcon icon = new ImageIcon(image);

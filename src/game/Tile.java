@@ -18,10 +18,7 @@ public class Tile {
     }
 
     public boolean isEmptyTile(){
-        if (this.piece == null){
-            return true;
-        }
-        return false;
+        return this.piece == null;
     }
 
     public int getX() {

@@ -1,5 +1,6 @@
 import game.Board;
 import game.Color;
+import game.State;
 import game.Tile;
 import org.junit.jupiter.api.Test;
 import pieces.King;
@@ -25,7 +26,7 @@ public class TestCheckMate {
         assertTrue(board.move(board.getCurrentPlayer(), board.getTile(1, 4), board.getTile(3, 4)));
         assertTrue(board.move(board.getCurrentPlayer(), board.getTile(6, 6), board.getTile(4, 6)));
         board.move(board.getCurrentPlayer(), board.getTile(0, 3), board.getTile(4, 7));
-        assertTrue(board.isCheckMate());
+        assertTrue(board.getState() == State.CHECKMATE);
     }
 
     @Test
@@ -40,7 +41,7 @@ public class TestCheckMate {
         assertTrue(board.move(board.getCurrentPlayer(), board.getTile(7, 3), board.getTile(3, 7)));
         assertTrue(board.move(board.getCurrentPlayer(), board.getTile(0, 6), board.getTile(2, 5)));
         assertTrue(board.move(board.getCurrentPlayer(), board.getTile(3, 7), board.getTile(1, 5)));
-        assertTrue(board.isCheckMate());
+        assertTrue(board.getState() == State.CHECKMATE);
     }
 
     @Test
@@ -59,10 +60,10 @@ public class TestCheckMate {
         assertTrue(board.move(board.getCurrentPlayer(), board.getTile(5, 5), board.getTile(3, 4)));
         assertTrue(board.move(board.getCurrentPlayer(), board.getTile(4, 6), board.getTile(7, 3)));
         assertTrue(board.move(board.getCurrentPlayer(), board.getTile(4, 2), board.getTile(1, 5)));
-        assertTrue(board.isCheck());
+        assertTrue(board.getState() == State.CHECK);
         board.move(board.getCurrentPlayer(), board.getTile(0, 4), board.getTile(1, 4));
         assertTrue(board.move(board.getCurrentPlayer(), board.getTile(5, 2), board.getTile(3, 3)));
-        assertTrue(board.isCheckMate());
+        assertTrue(board.getState() == State.CHECKMATE);
     }
 
     @Test
@@ -79,7 +80,7 @@ public class TestCheckMate {
         board.getWhitePlayer().setKing(whiteKing);
         board.getBlackPlayer().setKing(blackKing);
         assertTrue(board.move(board.getWhitePlayer(), board.getTile(5, 0), board.getTile(5, 7)));
-        assertTrue(board.isCheckMate());
+        assertTrue(board.getState() == State.CHECKMATE);
     }
 
     @Test
@@ -96,6 +97,6 @@ public class TestCheckMate {
         board.getWhitePlayer().setKing(whiteKing);
         board.getBlackPlayer().setKing(blackKing);
         assertTrue(board.move(board.getWhitePlayer(), board.getTile(7, 7), board.getTile(0, 7)));
-        assertTrue(board.isCheckMate());
+        assertTrue(board.getState() == State.CHECKMATE);
     }
 }

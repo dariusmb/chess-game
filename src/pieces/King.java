@@ -11,11 +11,8 @@ import java.util.ArrayList;
  */
 public class King extends Piece{
 
-    private boolean isFirstMove;
-
     public King(Color color, int x, int y){
         super(color, x, y);
-        this.isFirstMove = true;
     }
 
     @Override
