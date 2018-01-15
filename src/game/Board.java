@@ -93,8 +93,8 @@ public class Board {
         this.getTile(position, 7).setPiece(pawn7);
         this.getTile(position + offset, 0).setPiece(rook);
         this.getTile(position + offset, 7).setPiece(rook1);
-        this.getTile(position + offset, 2).setPiece(bishop);
-        this.getTile(position + offset, 5).setPiece(bishop1);
+        this.getTile(position + offset, 5).setPiece(bishop);
+        this.getTile(position + offset, 2).setPiece(bishop1);
         this.getTile(position + offset, 1).setPiece(knight);
         this.getTile(position + offset, 6).setPiece(knight1);
         this.getTile(position + offset, 3).setPiece(queen);
@@ -204,37 +204,33 @@ public class Board {
 
     /**
      * Checks if the requested move cand be made
-     * @param player the player that makes the move
      * @param fromTile from
      * @param toTile to
      * @return true if the move was made and false otherwise
      */
-    public boolean move(Player player, Tile fromTile, Tile toTile) {
+    public boolean move(Tile fromTile, Tile toTile) {
 
         boolean moveMade = false;
 
         Piece movedPiece = fromTile.getPiece();
-        if(player.getColor() != fromTile.getPiece().getColor()){
-            //not your piece
-            return false;
-        }
+
 
         if(toTile.getPiece() != null && toTile.getPiece().getColor() == fromTile.getPiece().getColor()){
             //cannot capture your own piece
             return false;
         }
 
-        if((movedPiece instanceof Pawn && movePawn(player, fromTile, toTile))){
-            moveMade = validateMove(player, fromTile, toTile);
+        if((movedPiece instanceof Pawn && movePawn(currentPlayer, fromTile, toTile))){
+            moveMade = validateMove(fromTile, toTile);
         } else if (movedPiece instanceof King && movedPiece.isMoveValid(fromTile, toTile) &&
-                !isThreatenTile(player.getColor(), toTile, true)){
-            moveMade = validateMove(player, fromTile, toTile);
+                !isThreatenTile(currentPlayer.getColor(), toTile, true)){
+            moveMade = validateMove(fromTile, toTile);
         } else if(movedPiece instanceof King && (fromTile.getY() - 3 == toTile.getY() || fromTile.getY() + 2 == toTile.getY())
                 && fromTile.getX() == toTile.getX()) {
             moveMade = tryToDoTheCastling(fromTile,toTile);
         } else if(movedPiece.isMoveValid(fromTile, toTile)
                 && checkIfClearWay(fromTile, toTile) && !(movedPiece instanceof Pawn) && !(movedPiece instanceof King)){
-            moveMade = validateMove(player, fromTile, toTile);
+            moveMade = validateMove(fromTile, toTile);
         }
 
         Tile kingTile = getTile(currentPlayer.getKing().getX(), currentPlayer.getKing().getY());
@@ -260,30 +256,24 @@ public class Board {
     //Make the move on the board
     /**
      * Moves the piece fromTile to toTile on the board
-     * @param player the player who wants to move
      * @param fromTile from spot
      * @param toTile to spot
      */
-    private void makeMove(Player player, Tile fromTile, Tile toTile){
+    private void makeMove(Tile fromTile, Tile toTile){
         if(fromTile.getPiece() instanceof King){
-            player.setKingCoordinates(toTile.getX(), toTile.getY());
+            currentPlayer.setKingCoordinates(toTile.getX(), toTile.getY());
         }
         if(toTile.getPiece() != null){
             removePiece(toTile);
         }
         fromTile.getPiece().setX(toTile.getX());
         fromTile.getPiece().setY(toTile.getY());
-        if(currentPlayer == whitePlayer){
-            currentPlayer = blackPlayer;
-        } else {
-            currentPlayer = whitePlayer;
-        }
         lastMove = toTile;
         fromTile.getPiece().setFirstMove(false);
 
         //If the pawn reached the end of the board it is promoted to Queen
         if(fromTile.getPiece() instanceof Pawn && (toTile.getX() == 0 || toTile.getX() == 7)){
-            Queen queen = new Queen(player.getColor(), toTile.getX(), toTile.getY());
+            Queen queen = new Queen(currentPlayer.getColor(), toTile.getX(), toTile.getY());
             toTile.setPiece(queen);
         } else {
             toTile.setPiece(fromTile.getPiece());
@@ -291,39 +281,43 @@ public class Board {
 
 
         fromTile.setPiece(null);
+        if(currentPlayer == whitePlayer){
+            currentPlayer = blackPlayer;
+        } else {
+            currentPlayer = whitePlayer;
+        }
     }
 
     /**
      * Makes the move on the board than checks if after the move the player is
      * in check. If the player is in check then the move is undone else it
      * calls the function makeMove to make the move on the board
-     * @param player the player who wants to move
      * @param fromTile from spot
      * @param toTile to spot
      * @return true if the move could be made and false otherwise
      */
-    private boolean validateMove(Player player, Tile fromTile, Tile toTile){
+    private boolean validateMove(Tile fromTile, Tile toTile){
         boolean moveMade = false;
         Tile tile = new Tile(toTile.getX(), toTile.getY());
         tile.setPiece(toTile.getPiece());
 
         toTile.setPiece(fromTile.getPiece());
         if(fromTile.getPiece() instanceof King){
-            player.setKingCoordinates(toTile.getX(), toTile.getY());
+            currentPlayer.setKingCoordinates(toTile.getX(), toTile.getY());
         }
-        Tile kingTile = getTile(player.getKing().getX(), player.getKing().getY());
+        Tile kingTile = getTile(currentPlayer.getKing().getX(), currentPlayer.getKing().getY());
         fromTile.setPiece(null);
-        if(!isThreatenTile(player.getColor(), kingTile, true)){
+        if(!isThreatenTile(currentPlayer.getColor(), kingTile, true)){
             fromTile.setPiece(toTile.getPiece());
             toTile.setPiece(tile.getPiece());
-            makeMove(player, fromTile, toTile);
+            makeMove(fromTile, toTile);
             moveMade = true;
         } else {
             //not a valid move, can't move a piece if it leaves you in check, move the pieces back
             fromTile.setPiece(toTile.getPiece());
             toTile.setPiece(tile.getPiece());
             if (fromTile.getPiece() instanceof King) {
-                player.setKingCoordinates(fromTile.getX(), fromTile.getY());
+                currentPlayer.setKingCoordinates(fromTile.getX(), fromTile.getY());
             }
         }
 
@@ -356,7 +350,7 @@ public class Board {
             //if there is a piece on diagonal you can capture it
             if(!getTile(toX, toY).isEmptyTile()){
                 return true;
-            //checks if the move en passant is valid and takes the piece from lastMove and captures it
+                //checks if the move en passant is valid and takes the piece from lastMove and captures it
             } else if (lastMove != null && lastMove.getX() == toX - rowOffset &&
                     lastMove.getY() == toY && ((Pawn)lastMove.getPiece()).isJumpOneSpace()){
                 removePiece(lastMove);
@@ -393,7 +387,7 @@ public class Board {
      * @param canPawnAttack if the pawn can attack
      * @return
      */
-        public boolean isThreatenTile(Color threatenedColor, Tile threatenedTile, boolean canPawnAttack){
+    public boolean isThreatenTile(Color threatenedColor, Tile threatenedTile, boolean canPawnAttack){
 
         int rowDirections[] = {-1, -1, -1, 0, 0, 1, 1, 1};
         int colDirections[] = {-1, 0, 1, -1, 1, -1, 0, 1};
@@ -404,11 +398,17 @@ public class Board {
         boolean kill = threatenedColor == Color.BLACK;
         boolean pawnThreats[] = {!kill, false, !kill, false, false, kill, false, kill};
 
+
         boolean threatDetected;
         int threatenedRow = threatenedTile.getX();
         int threatenedCol = threatenedTile.getY();
 
         threatDetected = knightThreat(threatenedColor, threatenedTile);
+
+        //if the pawn can intercept the piece when in check
+        if(!canPawnAttack && checkPawnIntercept(threatenedColor, threatenedTile)){
+            return true;
+        }
 
         for (int direction = 0; direction < 8 && !threatDetected; direction++){
             // reset our coordinates to process current line of attack
@@ -419,12 +419,12 @@ public class Board {
             int rowIncrement = rowDirections[direction];
             int colIncrement = colDirections[direction];
 
-            //radiate outwards starting from origin until we hit a piece or we are out of bounds
+            //move outwards starting from origin until we hit a piece or we are out of bounds
             for (int step = 0; step < 8; step++){
                 row = row + rowIncrement;
                 col = col + colIncrement;
 
-                //if we are out of bounds we stop radiating outwards for this ray and try with next one
+                //if we are out of bounds we stop moving outwards for this direction and try with next one
                 if (row < 0 || row > 7 || col < 0 || col > 7){
                     break;
                 } else {
@@ -460,6 +460,31 @@ public class Board {
         }
 
         return threatDetected;
+    }
+
+    private boolean checkPawnIntercept(Color threatenedColor, Tile threatenedTile){
+
+        int pawnDirection = threatenedColor == Color.BLACK ? 1 : -1;
+        int threatenedRow = threatenedTile.getX();
+        int threatenedCol = threatenedTile.getY();
+
+        Tile tile = getTile(threatenedRow + pawnDirection, threatenedCol);
+        if(tile != null) {
+            if (tile.getPiece() != null) {
+                if (tile.getPiece() instanceof Pawn && tile.getPiece().getColor() != threatenedColor) {
+                    return true;
+                }
+            } else {
+                //if the pawn can jump one space
+                tile = getTile(threatenedRow + 2 * pawnDirection, threatenedCol);
+                if (tile != null && tile.getPiece() instanceof Pawn &&
+                        tile.getPiece().getColor() != threatenedColor && tile.getPiece().isFirstMove()){
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private  boolean knightThreat(Color threatenedColor, Tile threatenedTile){
@@ -522,7 +547,7 @@ public class Board {
             return false;
         }
 
-        makeMove(currentPlayer, fromTile, toTile);
+        makeMove(fromTile, toTile);
         rookTile.getPiece().setX(newRookTile.getX());
         rookTile.getPiece().setY(newRookTile.getY());
         newRookTile.setPiece(rookTile.getPiece());

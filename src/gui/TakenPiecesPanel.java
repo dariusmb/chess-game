@@ -24,6 +24,7 @@ class TakenPiecesPanel extends JPanel {
     private static final Dimension TAKEN_PIECES_DIMENSION = new Dimension(120, 80);
     TakenPiecesPanel() {
         super(new BorderLayout());
+        removeAll();
         setBackground(PANEL_COLOR);
         this.upPanel = new JPanel();
         upPanel.setLayout(new GridLayout(8, 2));
@@ -37,7 +38,6 @@ class TakenPiecesPanel extends JPanel {
     }
 
     void redo(final Board board){
-
         this.downPanel.removeAll();
         this.upPanel.removeAll();
 

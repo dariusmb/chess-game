@@ -84,5 +84,4 @@ public class Pawn extends Piece{
 
         return this.getPossibleMoves();
     }
-
 }

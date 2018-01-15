@@ -17,15 +17,15 @@ public class TestCastling {
         Board board = new Board();
 
         board.initializeBoard();
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(6, 4), board.getTile(4, 4)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(1, 4), board.getTile(3, 4)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(7, 5), board.getTile(2, 0)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(1, 1), board.getTile(2, 0)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(7, 6), board.getTile(5, 7)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(1, 7), board.getTile(2, 7)));
+        assertTrue(board.move(board.getTile(6, 4), board.getTile(4, 4)));
+        assertTrue(board.move(board.getTile(1, 4), board.getTile(3, 4)));
+        assertTrue(board.move(board.getTile(7, 5), board.getTile(2, 0)));
+        assertTrue(board.move(board.getTile(1, 1), board.getTile(2, 0)));
+        assertTrue(board.move(board.getTile(7, 6), board.getTile(5, 7)));
+        assertTrue(board.move(board.getTile(1, 7), board.getTile(2, 7)));
 
         //the castling move
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(7, 4), board.getTile(7, 6)));
+        assertTrue(board.move(board.getTile(7, 4), board.getTile(7, 6)));
         assertTrue(board.getTile(7, 6).getPiece() instanceof King);
         assertTrue(board.getTile(7, 5).getPiece() instanceof Rook);
     }
@@ -35,19 +35,19 @@ public class TestCastling {
         Board board = new Board();
 
         board.initializeBoard();
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(6, 4), board.getTile(4, 4)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(1, 4), board.getTile(3, 4)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(6, 3), board.getTile(4, 3)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(1, 0), board.getTile(3, 0)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(7, 3), board.getTile(6, 4)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(0, 1), board.getTile(2, 0)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(7, 2), board.getTile(6, 3)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(0, 6), board.getTile(2, 7)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(7, 1), board.getTile(5, 0)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(0, 5), board.getTile(1, 4)));
+        assertTrue(board.move(board.getTile(6, 4), board.getTile(4, 4)));
+        assertTrue(board.move(board.getTile(1, 4), board.getTile(3, 4)));
+        assertTrue(board.move(board.getTile(6, 3), board.getTile(4, 3)));
+        assertTrue(board.move(board.getTile(1, 0), board.getTile(3, 0)));
+        assertTrue(board.move(board.getTile(7, 3), board.getTile(6, 4)));
+        assertTrue(board.move(board.getTile(0, 1), board.getTile(2, 0)));
+        assertTrue(board.move(board.getTile(7, 2), board.getTile(6, 3)));
+        assertTrue(board.move(board.getTile(0, 6), board.getTile(2, 7)));
+        assertTrue(board.move(board.getTile(7, 1), board.getTile(5, 0)));
+        assertTrue(board.move(board.getTile(0, 5), board.getTile(1, 4)));
 
         //the castling move
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(7, 4), board.getTile(7, 1)));
+        assertTrue(board.move(board.getTile(7, 4), board.getTile(7, 1)));
         assertTrue(board.getTile(7, 1).getPiece() instanceof King);
         assertTrue(board.getTile(7, 2).getPiece() instanceof Rook);
     }
@@ -58,16 +58,16 @@ public class TestCastling {
 
         board.initializeBoard();
 
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(6, 4), board.getTile(4, 4)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(1, 4), board.getTile(3, 4)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(7, 5), board.getTile(2, 0)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(0, 5), board.getTile(1, 4)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(7, 6), board.getTile(5, 7)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(0, 6), board.getTile(2, 7)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(6, 0), board.getTile(4, 0)));
+        assertTrue(board.move(board.getTile(6, 4), board.getTile(4, 4)));
+        assertTrue(board.move(board.getTile(1, 4), board.getTile(3, 4)));
+        assertTrue(board.move(board.getTile(7, 5), board.getTile(2, 0)));
+        assertTrue(board.move(board.getTile(0, 5), board.getTile(1, 4)));
+        assertTrue(board.move(board.getTile(7, 6), board.getTile(5, 7)));
+        assertTrue(board.move(board.getTile(0, 6), board.getTile(2, 7)));
+        assertTrue(board.move(board.getTile(6, 0), board.getTile(4, 0)));
 
         //the castling move
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(0, 4), board.getTile(0, 6)));
+        assertTrue(board.move(board.getTile(0, 4), board.getTile(0, 6)));
         assertTrue(board.getTile(0, 6).getPiece() instanceof King);
         assertTrue(board.getTile(0, 5).getPiece() instanceof Rook);
     }
@@ -77,18 +77,18 @@ public class TestCastling {
         Board board = new Board();
 
         board.initializeBoard();
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(6, 4), board.getTile(4, 4)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(1, 3), board.getTile(3, 3)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(6, 3), board.getTile(5, 3)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(0, 2), board.getTile(2, 4)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(6, 7), board.getTile(4, 7)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(0, 3), board.getTile(2, 3)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(7, 6), board.getTile(5, 5)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(0, 1), board.getTile(2, 0)));
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(6, 0), board.getTile(5, 0)));
+        assertTrue(board.move(board.getTile(6, 4), board.getTile(4, 4)));
+        assertTrue(board.move(board.getTile(1, 3), board.getTile(3, 3)));
+        assertTrue(board.move(board.getTile(6, 3), board.getTile(5, 3)));
+        assertTrue(board.move(board.getTile(0, 2), board.getTile(2, 4)));
+        assertTrue(board.move(board.getTile(6, 7), board.getTile(4, 7)));
+        assertTrue(board.move(board.getTile(0, 3), board.getTile(2, 3)));
+        assertTrue(board.move(board.getTile(7, 6), board.getTile(5, 5)));
+        assertTrue(board.move(board.getTile(0, 1), board.getTile(2, 0)));
+        assertTrue(board.move(board.getTile(6, 0), board.getTile(5, 0)));
 
         //the castling move
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(0, 4), board.getTile(0, 1)));
+        assertTrue(board.move(board.getTile(0, 4), board.getTile(0, 1)));
         assertTrue(board.getTile(0, 1).getPiece() instanceof King);
         assertTrue(board.getTile(0, 2).getPiece() instanceof Rook);
     }
@@ -108,7 +108,7 @@ public class TestCastling {
         board.getWhitePlayer().setKing(whiteKing);
 
         //Can't castle because a tile between the king and the rook is threatened by a Bishop
-        assertFalse(board.move(board.getCurrentPlayer(), board.getTile(7, 4), board.getTile(7, 6)));
+        assertFalse(board.move(board.getTile(7, 4), board.getTile(7, 6)));
     }
 
     @Test
@@ -126,7 +126,7 @@ public class TestCastling {
         board.getWhitePlayer().setKing(whiteKing);
 
         //Can't castle because a tile between the king and the rook is threatened by a Pawn
-        assertFalse(board.move(board.getCurrentPlayer(), board.getTile(7, 4), board.getTile(7, 6)));
+        assertFalse(board.move(board.getTile(7, 4), board.getTile(7, 6)));
     }
 
     @Test
@@ -143,9 +143,9 @@ public class TestCastling {
         board.getBlackPlayer().setKing(blackKing);
         board.getWhitePlayer().setKing(whiteKing);
         board.setCurrentPlayer(board.getBlackPlayer());
-        assertTrue(board.move(board.getCurrentPlayer(), board.getTile(4, 3), board.getTile(5, 2)));
+        assertTrue(board.move(board.getTile(4, 3), board.getTile(5, 2)));
         assertTrue(board.getState() == State.CHECK);
         //Can't castle because a tile between the king and the rook is threatened by a Pawn
-        assertFalse(board.move(board.getCurrentPlayer(), board.getTile(7, 4), board.getTile(7, 6)));
+        assertFalse(board.move(board.getTile(7, 4), board.getTile(7, 6)));
     }
 }

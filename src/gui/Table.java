@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -24,12 +25,13 @@ import static javax.swing.SwingUtilities.isRightMouseButton;
  */
 public class Table extends Observable{
 
-    private final TakenPiecesPanel takenPiecesPanel;
-    private final BoardPanel boardPanel;
-    private final Board chessBoard;
+    private TakenPiecesPanel takenPiecesPanel;
+    private BoardPanel boardPanel;
+    private Board chessBoard;
     private Tile fromTile;
     private Tile toTile;
     private Piece movedPiece;
+    JFrame gameFrame = new JFrame("Chess");
 
     private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(800, 800);
     private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(600, 600);
@@ -38,21 +40,19 @@ public class Table extends Observable{
     private Color darkTileColor = Color.decode("#000000");
 
     public Table(){
-        JFrame gameFrame = new JFrame("Chess");
         gameFrame.setLayout(new BorderLayout());
         gameFrame.setSize(OUTER_FRAME_DIMENSION);
+        this.addObserver(new ChessCheck());
         this.chessBoard = new Board();
         chessBoard.initializeBoard();
         this.takenPiecesPanel = new TakenPiecesPanel();
         this.boardPanel = new BoardPanel();
-        this.addObserver(new ChessCheck());
         gameFrame.add(this.boardPanel, BorderLayout.CENTER);
         gameFrame.add(this.takenPiecesPanel, BorderLayout.EAST);
         gameFrame.setVisible(true);
         gameFrame.setResizable(false);
         gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
-
 
     private class BoardPanel extends JPanel {
         final List<TilePanel> boardTiles;
@@ -97,7 +97,7 @@ public class Table extends Observable{
 
             if (chessBoard.getState() == State.CHECKMATE) {
                 JOptionPane.showMessageDialog(boardPanel,
-                        "Game Over: Player " + chessBoard.getCurrentPlayer().getColor() + " is in checkmate!", "Game Over",
+                        "Game Over: Player " + chessBoard.getCurrentPlayer().getColor() + " is in checkMate!", "Check Mate",
                         JOptionPane.INFORMATION_MESSAGE);
             }
 
@@ -155,7 +155,7 @@ public class Table extends Observable{
                             //if another tile is clicked before
                             toTile = chessBoard.getTile(tileRow, tileCol);
                             if(chessBoard.getCurrentPlayer().getColor() == fromTile.getPiece().getColor()){
-                                chessBoard.move(chessBoard.getCurrentPlayer(), fromTile, toTile);
+                                chessBoard.move(fromTile, toTile);
                                 fromTile = null;
                                 toTile = null;
                                 movedPiece = null;
@@ -212,7 +212,6 @@ public class Table extends Observable{
 //                        tilePanel.setBackground(Color.green);
 //                    }
 //                }
-
             } else {
                 setBorder(BorderFactory.createLineBorder(Color.gray));
             }
